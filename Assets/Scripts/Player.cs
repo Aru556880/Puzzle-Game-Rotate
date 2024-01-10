@@ -4,17 +4,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+
     public Vector2Int HeadDirection;
-    // Start is called before the first frame update
+    public bool CanPlayerControl;
+    float gridSize { get { return GameManager.Instance.levelBuilder.GridSize;} }
     void Start()
     {
         HeadDirection = new Vector2Int(1,0);
+        CanPlayerControl = true;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         
+    }
+    void Centralize()
+    {
+        Vector2Int gridPos = GameManager.Instance.levelBuilder.GetGridFromWorld(transform.position);
+        transform.position = GameManager.Instance.levelBuilder.GetWorldFromGrid(gridPos);
     }
     #region MOVING_RELATED
     public void Move(Vector2 direction)
@@ -29,70 +37,65 @@ public class Player : MonoBehaviour
         }
 
         direction.Normalize();
-        Vector2 nextPosition = GetTargetPosition(transform.position, direction);
+        Vector2 nextPosition = Util.GetCertainPosition(transform.position, direction);
+        Vector2 contactWallCenter = Util.GetCertainPosition(transform.position, Util.ClockwiseNextDir(direction));
+        Vector2 rotatePivot = GetRotatePivot(contactWallCenter, direction);
         
-        if(!IsBlocked(transform.position, direction, out Vector2 contactPos))
+        if(!IsBlocked(transform.position, direction, contactWallCenter))
         {
-            transform.position = nextPosition;
-            print(contactPos);
-            test.transform.position = contactPos;
+            test.transform.position = rotatePivot;
+            StartCoroutine(RotateAnimation(direction, rotatePivot));
+            
         }
     }
-    Vector2 GetTargetPosition(Vector2 point ,Vector2 offset)
+    Vector2 GetRotatePivot(Vector2 contactWallCenter, Vector2 movingDir)
     {
-        return point + offset * GameManager.Instance.levelBuilder.GridSize;
+        return contactWallCenter + (movingDir + Util.ClockwisePrevDir(movingDir)) * gridSize * 0.5f;
     }
     bool IsWall(Vector2 position)
     {
         return GameManager.Instance.levelBuilder.IsWall(position);
     }
-    bool IsBlocked(Vector2 currentPos, Vector2 movingDir, out Vector2 contactPos)
+    bool IsBlocked(Vector2 currentPos, Vector2 movingDir, Vector2 contactWallPos)
     {
-        contactPos = Vector2.zero;
-        Vector2 checkedPos1_1;
-        Vector2 checkedPos1_2;
-        Vector2 checkedPos2_1;
-        Vector2 checkedPos2_2;
-        Vector2 nextPosition = GetTargetPosition(currentPos, movingDir);
+        Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);
 
-        if(IsWall(nextPosition)) return true;
+        if(movingDir.x == 0 && movingDir.y == 0) return true;
+        else if(!IsWall(contactWallPos)) return true;
+        else if(IsWall(nextPos)) return true;
 
-        if(movingDir.x == 0 && movingDir.y != 0)
-        {
-            checkedPos1_1 = GetTargetPosition(currentPos, new Vector2(-1,0));
-            checkedPos2_1 = GetTargetPosition(currentPos, new Vector2(1,0));
-        }
-        else if(movingDir.x != 0 && movingDir.y == 0)
-        {
-            checkedPos1_1 = GetTargetPosition(currentPos, new Vector2(0,-1));
-            checkedPos2_1 = GetTargetPosition(currentPos, new Vector2(0,1));
-        }
-        else
-        {
-            return true;
-        }
-
-        checkedPos1_2 = GetTargetPosition(checkedPos1_1, movingDir);
-        checkedPos2_2 = GetTargetPosition(checkedPos2_1, movingDir);
-
-        Vector2[] checkPosArray = 
-        {
-            checkedPos1_1,
-            checkedPos2_1,
-        };
-
-        foreach(var checkpos in checkPosArray)
-        {
-            if(IsWall(checkpos))
-            {
-                contactPos = checkpos;
-                break;
-            }
-        }
-
-        return (IsWall(checkedPos1_1) || IsWall(checkedPos1_2))
-        && (IsWall(checkedPos2_1) || IsWall(checkedPos2_2));
+        return false;
     }
     #endregion
+
+    #region COROUTINE
+    IEnumerator RotateAnimation(Vector2 movingDir, Vector2 rotatePivot)
+    {
+        CanPlayerControl = false;
+        
+        Vector3 prevRotate = transform.rotation.eulerAngles;
+        float progress = 0;
+        float duration = 0.25f;
+
+        while(progress < duration)
+        {
+            float rotateAngle = - Time.deltaTime * 90 / duration;
+
+            if(progress + Time.deltaTime > 1)
+            {
+                rotateAngle =  - (duration - progress) * 90 / duration;
+            }
+
+            progress += Time.deltaTime;
+            transform.RotateAround(rotatePivot, new Vector3(0,0,1) , rotateAngle);
+            yield return null;
+        }
+
+        transform.rotation = Quaternion.Euler(prevRotate + new Vector3(0,0,-90));
+        Centralize();
+        CanPlayerControl = true;
+        yield return null;
+    }
+    #endregion 
     [SerializeField] GameObject test;
 }

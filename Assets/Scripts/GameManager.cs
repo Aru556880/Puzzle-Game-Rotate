@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
             if(_readyForInput && IsKeyPressed())
             {
                 _readyForInput = false;
-                _player.Move(movementInput);
+                if(_player.CanPlayerControl) _player.Move(movementInput);
             }
         }
     }
