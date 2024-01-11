@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public LevelBuilder levelBuilder;
-    private bool _readyForInput;
+    private bool isMovementKeysPressed;
     private Player _player;
     void Awake() 
     {
@@ -20,30 +22,42 @@ public class GameManager : MonoBehaviour
     {
         _player = FindObjectOfType<Player>();
         levelBuilder = FindObjectOfType<LevelBuilder>();
+        isMovementKeysPressed = false;
     }
 
-    void Update()
+    public void PlayerMove(InputAction.CallbackContext context)
     {
-        Vector2 movementInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        movementInput.Normalize();
-
-        if(_player)
+        StopCoroutine("KeepPressingKey");
+        
+        if(context.performed) 
         {
-            if(IsKeysReleased()) _readyForInput = true;
+            isMovementKeysPressed = true;
+            StartCoroutine(KeepPressingKey(context));
+        }
 
-            if(_readyForInput && IsKeyPressed())
-            {
-                _readyForInput = false;
-                if(_player.CanPlayerControl) _player.Move(movementInput);
-            }
+        if(context.canceled)
+        {
+            isMovementKeysPressed = false;
+        }
+            
+    }
+    IEnumerator KeepPressingKey(InputAction.CallbackContext context)
+    {
+        Vector2 movementInput;
+        while(isMovementKeysPressed)
+        {
+            movementInput = context.ReadValue<Vector2>();
+            movementInput.Normalize();
+
+            if(_player.CanPlayerControl) _player.Move(movementInput);
+            yield return null;
         }
     }
-    bool IsKeyPressed()
+    public void SwitchPlayerMode(InputAction.CallbackContext context)
     {
-        return !IsKeysReleased();
-    }
-    bool IsKeysReleased()
-    {
-        return !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.D);
+        if(context.performed && !isMovementKeysPressed && _player.CanPlayerControl)
+        {
+            _player.SwitchMode();
+        }
     }
 }

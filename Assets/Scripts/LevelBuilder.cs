@@ -39,4 +39,9 @@ public class LevelBuilder : MonoBehaviour
         Vector2Int gridPos = GetGridFromWorld(worldPos);
         return tilemap.GetTile((Vector3Int)gridPos) != null;
     }
+    public TileBase GetTileAt(Vector2 worldPos)
+    {
+        Vector2Int gridPos = GetGridFromWorld(worldPos);
+        return tilemap.GetTile((Vector3Int)gridPos);
+    }
 }
