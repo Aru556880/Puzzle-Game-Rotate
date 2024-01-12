@@ -16,4 +16,13 @@ public class Util : MonoBehaviour
     {
         return point + offset * GameManager.Instance.levelBuilder.GridSize;
     }
+    public static IEnumerator WaitForCoroutines(List<Coroutine> coroutines)
+    {
+        for(int i=0;i<coroutines.Count;i++)
+        {
+            yield return coroutines[i];
+        }
+        
+        yield return null;
+    }
 }

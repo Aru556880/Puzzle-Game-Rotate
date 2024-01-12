@@ -4,19 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Player : MonoBehaviour
+public class Player : Actor
 {
-    public enum PlayerSquareMode
-    {
-        Blue,
-        Red,
-    }
-
     public Vector2Int HeadDirection;
     public bool CanPlayerControl;
-    public PlayerSquareMode CurrentMode;
+    public SquareColor CurrentMode;
     
-    float _gridSize { get { return GameManager.Instance.levelBuilder.GridSize;} }
     SpriteRenderer _spriteRenderer;
     [SerializeField] Sprite _bluePlayerSprite;
     [SerializeField] Sprite _redPlayerSprite;
@@ -28,15 +21,10 @@ public class Player : MonoBehaviour
     {
         HeadDirection = new Vector2Int(1,0);
         CanPlayerControl = true;
+        CurrentMode = SquareColor.Blue;
         _spriteRenderer.sprite = _bluePlayerSprite;
-        CurrentMode = PlayerSquareMode.Blue;
     }
     #region PLAYER_RELATED
-    void Centralize()
-    {
-        Vector2Int gridPos = GameManager.Instance.levelBuilder.GetGridFromWorld(transform.position);
-        transform.position = GameManager.Instance.levelBuilder.GetWorldFromGrid(gridPos);
-    }
     public void SwitchMode()
     {
         StartCoroutine(SwitchModeCoroutine());
@@ -55,47 +43,58 @@ public class Player : MonoBehaviour
     int GetRotateDir()
     {
         //1: counterclockwise, -1: clockwise
-        if(CurrentMode == PlayerSquareMode.Blue)
+        if(CurrentMode == SquareColor.Blue)
             return -1;
-        else if(CurrentMode == PlayerSquareMode.Red)
+        else if(CurrentMode == SquareColor.Red)
             return 1;
 
         return 0;
     }
     Vector2 GetContactDir(Vector2 movingDir)
     {
-        if(CurrentMode == PlayerSquareMode.Blue)
+        if(CurrentMode == SquareColor.Blue)
             return Util.ClockwiseNextDir(movingDir);
-        else if(CurrentMode == PlayerSquareMode.Red)
+        else if(CurrentMode == SquareColor.Red)
             return Util.ClockwisePrevDir(movingDir);
 
         return Vector2.zero;
-    }
-    bool IsWall(Vector2 position)
-    {
-        return GameManager.Instance.levelBuilder.IsWall(position);
     }
     bool IsWalkableWall(Vector2 position)
     {
         TileBase tile = GameManager.Instance.levelBuilder.GetTileAt(position);
         if(tile==null) return false;
         
-        if(CurrentMode == PlayerSquareMode.Blue)
+        if(CurrentMode == SquareColor.Blue)
             return tile.name.Contains("Blue");
-        else if(CurrentMode == PlayerSquareMode.Red)
+        else if(CurrentMode == SquareColor.Red)
             return tile.name.Contains("Red");
         
         return false;
     }
-    bool IsBlocked(Vector2 currentPos, Vector2 movingDir, Vector2 contactWallPos)
+    bool CanPlayerMove(Vector2 movingDir, Vector2 contactWallPos, out List<Actor> activedActors)
     {
+        activedActors = new ();
+        Vector2 currentPos = transform.position;
         Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);
 
-        if(movingDir.x == 0 && movingDir.y == 0) return true;
-        else if(!IsWall(contactWallPos)) return true;
-        else if(IsWall(nextPos)) return true;
+        if(movingDir.x == 0 && movingDir.y == 0) return false;
+        else if(!IsOccupied(contactWallPos)) return false;
+        else if(IsWall(nextPos)) return false;
 
-        return false;
+        foreach(Transform actor in _actors)
+        {
+            Vector2 actorGridPos = GetGridPos(actor.transform.position);
+            Vector2 playerNextGridPos = GetGridPos(nextPos);
+
+            if(playerNextGridPos != actorGridPos) continue;
+            if(actor.TryGetComponent(out Box box))
+            {
+                if(box.CanBoxMove(movingDir, out _)) activedActors.Add(box); //Maybe use interface method here
+                else return false;
+            }
+        }
+
+        return true;
     }
     #endregion
 
@@ -103,14 +102,14 @@ public class Player : MonoBehaviour
     IEnumerator SwitchModeCoroutine()
     {
         CanPlayerControl = false;
-        if(CurrentMode == PlayerSquareMode.Blue)
+        if(CurrentMode == SquareColor.Blue)
         {
-            CurrentMode = PlayerSquareMode.Red;
+            CurrentMode = SquareColor.Red;
             _spriteRenderer.sprite = _redPlayerSprite;
         }
-        else if(CurrentMode == PlayerSquareMode.Red)
+        else if(CurrentMode == SquareColor.Red)
         {
-            CurrentMode = PlayerSquareMode.Blue;
+            CurrentMode = SquareColor.Blue;
             _spriteRenderer.sprite = _bluePlayerSprite;
         }
 
@@ -132,13 +131,28 @@ public class Player : MonoBehaviour
         direction.Normalize();
         Vector2 contactWallCenter = Util.GetCertainPosition(transform.position, GetContactDir(direction));
         Vector2 rotatePivot = GetRotatePivot(contactWallCenter, direction);
-        
-        if(!IsBlocked(transform.position, direction, contactWallCenter))
+        List<Actor> activedActors = new ();
+        List<Coroutine> activedCoroutine = new ();
+
+        if(!CanPlayerMove(direction, contactWallCenter, out activedActors))
         {
-            yield return StartCoroutine(RotateAnimation(direction, rotatePivot));
+            CanPlayerControl = true;
+            yield break;
+        }
+        
+        foreach(var actor in activedActors)
+        {
+            if(actor.TryGetComponent(out Box box)) //Maybe use interface here
+            {
+                activedCoroutine.Add(box.StartCoroutine(box.MovingBoxCoroutine(direction)));
+            }
         }
 
+        yield return StartCoroutine(RotateAnimation(direction, rotatePivot));
+
         yield return StartCoroutine(FallDownAnimation());
+
+        yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
 
         CanPlayerControl = true;
         yield return null;
@@ -175,7 +189,7 @@ public class Player : MonoBehaviour
         Vector2 contactPos2 = Util.GetCertainPosition(transform.position, new Vector2(-1,0));
         Vector2 contactPos3 = Util.GetCertainPosition(transform.position, new Vector2(0,1));
 
-        while(!IsWall(floorPos) && !IsWalkableWall(contactPos1) 
+        while(!IsOccupied(floorPos) && !IsWalkableWall(contactPos1) 
         && !IsWalkableWall(contactPos2) && !IsWalkableWall(contactPos3))
         {
             Vector2 origPos = transform.position;
