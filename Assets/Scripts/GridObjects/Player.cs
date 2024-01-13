@@ -24,6 +24,19 @@ public class Player : Actor
         CurrentMode = SquareColor.Blue;
         _spriteRenderer.sprite = _bluePlayerSprite;
     }
+    #region OVERRIDE
+    public override bool WillFallDown()
+    {
+        Vector2 floorPos = Util.GetCertainPosition(transform.position, new Vector2(0,-1));
+        Vector2 contactPos1 = Util.GetCertainPosition(transform.position, new Vector2(1,0));
+        Vector2 contactPos2 = Util.GetCertainPosition(transform.position, new Vector2(-1,0));
+        Vector2 contactPos3 = Util.GetCertainPosition(transform.position, new Vector2(0,1));
+
+        return !IsOccupied(floorPos) && !IsWalkableWall(contactPos1) 
+        && !IsWalkableWall(contactPos2) && !IsWalkableWall(contactPos3);
+    }
+    #endregion
+
     #region PLAYER_RELATED
     public void SwitchMode()
     {
@@ -71,9 +84,8 @@ public class Player : Actor
         
         return false;
     }
-    bool CanPlayerMove(Vector2 movingDir, Vector2 contactWallPos, out List<Actor> activedActors)
+    bool CanPlayerMove(Vector2 movingDir, Vector2 contactWallPos)
     {
-        activedActors = new ();
         Vector2 currentPos = transform.position;
         Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);
 
@@ -81,16 +93,14 @@ public class Player : Actor
         else if(!IsOccupied(contactWallPos)) return false;
         else if(IsWall(nextPos)) return false;
 
-        foreach(Transform actor in _actors)
-        {
-            Vector2 actorGridPos = GetGridPos(actor.transform.position);
-            Vector2 playerNextGridPos = GetGridPos(nextPos);
 
-            if(playerNextGridPos != actorGridPos) continue;
+        List<GameObject> occupyingActors = GetActorsAtPos(nextPos);
+        foreach(var actor in occupyingActors)
+        {
+            //Maybe use interface method here
             if(actor.TryGetComponent(out Box box))
             {
-                if(box.CanBoxMove(movingDir, out _)) activedActors.Add(box); //Maybe use interface method here
-                else return false;
+                if(!box.CanBoxMove(movingDir)) return false;
             }
         }
 
@@ -129,28 +139,46 @@ public class Player : Actor
         }
 
         direction.Normalize();
+        Vector2 abovePos = Util.GetCertainPosition(transform.position, new Vector2(0,1));
         Vector2 contactWallCenter = Util.GetCertainPosition(transform.position, GetContactDir(direction));
         Vector2 rotatePivot = GetRotatePivot(contactWallCenter, direction);
-        List<Actor> activedActors = new ();
+        Vector2 nextPos = Util.GetCertainPosition(transform.position, direction);
+        List<GameObject> pushedActors = new ();
+        List<GameObject> fallingActors = new ();
         List<Coroutine> activedCoroutine = new ();
 
-        if(!CanPlayerMove(direction, contactWallCenter, out activedActors))
+        if(!CanPlayerMove(direction, contactWallCenter))
         {
             CanPlayerControl = true;
             yield break;
         }
         
-        foreach(var actor in activedActors)
+        pushedActors = GetActorsAtPos(nextPos);
+        foreach(var actor in pushedActors)
         {
             if(actor.TryGetComponent(out Box box)) //Maybe use interface here
             {
-                activedCoroutine.Add(box.StartCoroutine(box.MovingBoxCoroutine(direction)));
+                Coroutine coroutine = box.StartCoroutine(box.MovingBoxCoroutine(direction));
+                if(!activedCoroutine.Contains(coroutine)) activedCoroutine.Add(coroutine);
             }
         }
 
         yield return StartCoroutine(RotateAnimation(direction, rotatePivot));
 
-        yield return StartCoroutine(FallDownAnimation());
+        fallingActors = GetFallingActor();
+        foreach(var actor in fallingActors)
+        {
+            if(actor.TryGetComponent(out Box box)) //Maybe use interface here
+            {
+                Coroutine coroutine = box.StartCoroutine(box.FallDownAnimation());
+                if(!activedCoroutine.Contains(coroutine)) activedCoroutine.Add(coroutine);
+            }
+            else if(actor.TryGetComponent(out Player player))
+            {
+                Coroutine coroutine = player.StartCoroutine(player.FallDownAnimation());
+                if(!activedCoroutine.Contains(coroutine)) activedCoroutine.Add(coroutine);
+            }
+        }
 
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
 
@@ -182,33 +210,6 @@ public class Player : Actor
         Centralize();
         yield return null;
     }
-    IEnumerator FallDownAnimation()
-    {
-        Vector2 floorPos = Util.GetCertainPosition(transform.position, new Vector2(0,-1));
-        Vector2 contactPos1 = Util.GetCertainPosition(transform.position, new Vector2(1,0));
-        Vector2 contactPos2 = Util.GetCertainPosition(transform.position, new Vector2(-1,0));
-        Vector2 contactPos3 = Util.GetCertainPosition(transform.position, new Vector2(0,1));
 
-        while(!IsOccupied(floorPos) && !IsWalkableWall(contactPos1) 
-        && !IsWalkableWall(contactPos2) && !IsWalkableWall(contactPos3))
-        {
-            Vector2 origPos = transform.position;
-            float progress = 0;
-            float duration = 0.25f;
-            while(progress < duration)
-            {
-                progress = Mathf.Min(duration, progress + Time.deltaTime);
-                transform.position = Vector2.Lerp(origPos, floorPos, progress/duration);
-                yield return null;
-            }
-
-            Centralize();
-            floorPos = Util.GetCertainPosition(transform.position, new Vector2(0,-1));
-            contactPos1 = Util.GetCertainPosition(transform.position, new Vector2(1,0));
-            contactPos2 = Util.GetCertainPosition(transform.position, new Vector2(-1,0));
-        }
-
-        yield return null;
-    }
     #endregion 
 }
