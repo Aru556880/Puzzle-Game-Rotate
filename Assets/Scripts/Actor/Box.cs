@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Box : Actor
+public class Box : MovableActor
 {
     // Start is called before the first frame update
     void Start()
@@ -48,6 +48,8 @@ public class Box : Actor
         }
 
         yield return StartCoroutine(TranslatingBoxCoroutine(movingDir));
+
+        TriggetInteractableActors();
 
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
 

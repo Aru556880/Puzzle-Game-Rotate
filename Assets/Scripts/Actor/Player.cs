@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Player : Actor
+public class Player : MovableActor
 {
     public Vector2Int HeadDirection;
     public bool CanPlayerControl;
@@ -123,6 +123,12 @@ public class Player : Actor
             _spriteRenderer.sprite = _bluePlayerSprite;
         }
 
+        if(!WillFallDown())
+        {
+            CanPlayerControl = true;
+            yield break;
+        }
+
         yield return StartCoroutine(FallDownAnimation());
         CanPlayerControl = true;
     }
@@ -164,6 +170,8 @@ public class Player : Actor
         }
 
         yield return StartCoroutine(RotateAnimation(direction, rotatePivot));
+
+        TriggetInteractableActors();
 
         fallingActors = GetFallingActor();
         foreach(var actor in fallingActors)
