@@ -24,6 +24,29 @@ public class Player : MovableActor
         CurrentMode = SquareColor.Blue;
         _spriteRenderer.sprite = _bluePlayerSprite;
     }
+    void Test()
+    {   
+        string st = "";
+        List<string> s1 = new List<string>();
+        List<string> s2 = new List<string>();
+        List<string> s3 = new List<string>();
+        s1.Add("1");
+        s1.Add("1");
+        s1.Add("2");
+        s1.Add("3");
+
+        s2.Add("3");
+        s2.Add("5");
+        s2.Add("10");
+        s2.Add("100");
+        foreach(var entry in s1) st += entry + " ";
+        st += " . ";
+        foreach(var entry in s2) st += entry + " ";
+        st += " . ";
+        s3 = Util.MergeList<String>(s1,s2);
+        foreach(var entry in s3) st += entry + "/";
+        print(st);
+    }
     #region OVERRIDE
     public override bool WillFallDown()
     {
@@ -49,6 +72,31 @@ public class Player : MovableActor
     {
         StartCoroutine(MovingCoroutine(direction));
     }
+    bool CanPlayerMove(Vector2 movingDir, Vector2 contactWallPos)
+    {
+        Vector2 currentPos = transform.position;
+        Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);
+
+        if(movingDir.x == 0 && movingDir.y == 0) return false;
+        else if(!IsOccupied(contactWallPos)) return false;
+        else if(IsWall(nextPos)) return false;
+
+
+        List<GameObject> occupyingActors = GetActorsAtPos(nextPos);
+        foreach(var actor in occupyingActors)
+        {
+            //Maybe use interface method here
+            if(actor.TryGetComponent(out Box box))
+            {
+                if(!box.CanBoxMove(movingDir)) return false;
+            }
+        }
+
+        return true;
+    }
+    #endregion
+    
+    #region MOVING_UTIL
     Vector2 GetRotatePivot(Vector2 contactWallCenter, Vector2 movingDir)
     {
         return contactWallCenter + _gridSize * 0.5f * (movingDir - GetContactDir(movingDir));
@@ -83,28 +131,6 @@ public class Player : MovableActor
             return tile.name.Contains("Red");
         
         return false;
-    }
-    bool CanPlayerMove(Vector2 movingDir, Vector2 contactWallPos)
-    {
-        Vector2 currentPos = transform.position;
-        Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);
-
-        if(movingDir.x == 0 && movingDir.y == 0) return false;
-        else if(!IsOccupied(contactWallPos)) return false;
-        else if(IsWall(nextPos)) return false;
-
-
-        List<GameObject> occupyingActors = GetActorsAtPos(nextPos);
-        foreach(var actor in occupyingActors)
-        {
-            //Maybe use interface method here
-            if(actor.TryGetComponent(out Box box))
-            {
-                if(!box.CanBoxMove(movingDir)) return false;
-            }
-        }
-
-        return true;
     }
     #endregion
 
@@ -149,7 +175,7 @@ public class Player : MovableActor
         Vector2 contactWallCenter = Util.GetCertainPosition(transform.position, GetContactDir(direction));
         Vector2 rotatePivot = GetRotatePivot(contactWallCenter, direction);
         Vector2 nextPos = Util.GetCertainPosition(transform.position, direction);
-        List<GameObject> pushedActors = new ();
+        
         List<GameObject> fallingActors = new ();
         List<Coroutine> activedCoroutine = new ();
 
@@ -158,35 +184,14 @@ public class Player : MovableActor
             CanPlayerControl = true;
             yield break;
         }
-        
-        pushedActors = GetActorsAtPos(nextPos);
-        foreach(var actor in pushedActors)
-        {
-            if(actor.TryGetComponent(out Box box)) //Maybe use interface here
-            {
-                Coroutine coroutine = box.StartCoroutine(box.MovingBoxCoroutine(direction));
-                if(!activedCoroutine.Contains(coroutine)) activedCoroutine.Add(coroutine);
-            }
-        }
+
+        activedCoroutine = Util.MergeList(activedCoroutine, PushActors(nextPos, direction));
 
         yield return StartCoroutine(RotateAnimation(direction, rotatePivot));
 
         TriggetInteractableActors();
 
-        fallingActors = GetFallingActor();
-        foreach(var actor in fallingActors)
-        {
-            if(actor.TryGetComponent(out Box box)) //Maybe use interface here
-            {
-                Coroutine coroutine = box.StartCoroutine(box.FallDownAnimation());
-                if(!activedCoroutine.Contains(coroutine)) activedCoroutine.Add(coroutine);
-            }
-            else if(actor.TryGetComponent(out Player player))
-            {
-                Coroutine coroutine = player.StartCoroutine(player.FallDownAnimation());
-                if(!activedCoroutine.Contains(coroutine)) activedCoroutine.Add(coroutine);
-            }
-        }
+        activedCoroutine = Util.MergeList(activedCoroutine, FallDownActors());
 
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
 

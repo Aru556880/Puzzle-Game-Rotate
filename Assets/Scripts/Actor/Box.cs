@@ -33,23 +33,18 @@ public class Box : MovableActor
     #region COROUTINE
     public IEnumerator MovingBoxCoroutine(Vector2 movingDir)
     {
-        List<GameObject> activedActors = new ();
         List<Coroutine> activedCoroutine = new ();
         Vector2 nextPos = Util.GetCertainPosition(transform.position, movingDir);
+
         if(!CanBoxMove(movingDir)) yield break;
 
-        activedActors = GetActorsAtPos(nextPos);
-        foreach(var actor in activedActors)
-        {
-            if(actor.TryGetComponent(out Box box)) //Maybe use interface here
-            {
-                activedCoroutine.Add(box.StartCoroutine(box.MovingBoxCoroutine(movingDir)));
-            }
-        }
+        activedCoroutine = Util.MergeList(activedCoroutine, PushActors(nextPos, movingDir));
 
         yield return StartCoroutine(TranslatingBoxCoroutine(movingDir));
 
         TriggetInteractableActors();
+
+        activedCoroutine = Util.MergeList(activedCoroutine, FallDownActors());
 
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
 
