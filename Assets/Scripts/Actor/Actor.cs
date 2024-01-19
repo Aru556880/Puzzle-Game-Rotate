@@ -29,11 +29,7 @@ public class Actor : MonoBehaviour
             Vector2 targetGridPos = GetGridPos(position);
 
             if(targetGridPos != actorGridPos) continue;
-            if(actor.TryGetComponent(out Box _))
-            {
-                return true;
-            }
-            else if(actor.TryGetComponent(out Player _))
+            if(actor.TryGetComponent(out MovableActor _))
             {
                 return true;
             }
