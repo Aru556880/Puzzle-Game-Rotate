@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class Actor : MonoBehaviour
 {
-    public enum SquareColor
-    {
-        None,
-        Blue,
-        Red,
-    }
     protected float _gridSize { get { return GameManager.Instance.levelBuilder.GridSize;} }
     protected Transform _actors { get { return transform==null ? transform : transform.parent; } }
     protected void Centralize()

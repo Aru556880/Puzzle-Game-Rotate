@@ -8,7 +8,6 @@ public class Player : MovableActor
 {
     public Vector2Int HeadDirection;
     public bool CanPlayerControl;
-    public SquareColor CurrentMode;
     
     SpriteRenderer _spriteRenderer;
     [SerializeField] Sprite _bluePlayerSprite;
@@ -21,7 +20,6 @@ public class Player : MovableActor
     {
         HeadDirection = new Vector2Int(1,0);
         CanPlayerControl = true;
-        CurrentMode = SquareColor.Blue;
         _spriteRenderer.sprite = _bluePlayerSprite;
     }
     void Test()
@@ -101,23 +99,34 @@ public class Player : MovableActor
     {
         return contactWallCenter + _gridSize * 0.5f * (movingDir - GetContactDir(movingDir));
     }
-    int GetRotateDir()
+    int GetRotateDir(Vector2 movingDir)
     {
         //1: counterclockwise, -1: clockwise
-        if(CurrentMode == SquareColor.Blue)
+        Vector2 contactDir = GetContactDir(movingDir);
+        if(contactDir == Util.ClockwiseNextDir(movingDir))
             return -1;
-        else if(CurrentMode == SquareColor.Red)
+        else if(contactDir == Util.ClockwisePrevDir(movingDir))
             return 1;
 
         return 0;
     }
     Vector2 GetContactDir(Vector2 movingDir)
     {
-        if(CurrentMode == SquareColor.Blue)
-            return Util.ClockwiseNextDir(movingDir);
-        else if(CurrentMode == SquareColor.Red)
-            return Util.ClockwisePrevDir(movingDir);
+        Vector2 direction1 = Util.ClockwiseNextDir(movingDir);
+        Vector2 direction2 = Util.ClockwisePrevDir(movingDir);
+        Vector2 position1 = Util.GetCertainPosition(transform.position,direction1); 
+        Vector2 position2 = Util.GetCertainPosition(transform.position,direction2); 
 
+        if( IsOccupied(position1) && !IsOccupied(position2) )
+        {
+            return direction1;
+        }
+        else if( !IsOccupied(position1) && IsOccupied(position2) )
+        {
+            return direction2;
+        }
+
+        Debug.Log("Cannot get contact direction!");
         return Vector2.zero;
     }
     bool IsWalkableWall(Vector2 position)
@@ -125,11 +134,28 @@ public class Player : MovableActor
         TileBase tile = GameManager.Instance.levelBuilder.GetTileAt(position);
         if(tile==null) return false;
         
-        if(CurrentMode == SquareColor.Blue)
-            return tile.name.Contains("Blue");
-        else if(CurrentMode == SquareColor.Red)
-            return tile.name.Contains("Red");
-        
+        return true;
+    }
+    bool CanRotate(Vector2 movingDir) //Can rotate if : not between walls at current position and next position
+    {
+        Vector2 nextPos = Util.GetCertainPosition(transform.position, movingDir);
+        Vector2 direction1 = Util.ClockwiseNextDir(movingDir);
+        Vector2 direction2 = Util.ClockwisePrevDir(movingDir);
+
+        Vector2 currentNormalPos1 = Util.GetCertainPosition(transform.position,direction1); 
+        Vector2 currentNormalPos2 = Util.GetCertainPosition(transform.position,direction2); 
+        Vector2 nextNormalPos1 = Util.GetCertainPosition(nextPos,direction1); 
+        Vector2 nextNormalPos2 = Util.GetCertainPosition(nextPos,direction2); 
+
+        if(IsOccupied(currentNormalPos1)||IsOccupied(nextNormalPos1))
+        {
+            return !(IsOccupied(currentNormalPos2)||IsOccupied(nextNormalPos2));
+        }
+        else if(IsOccupied(currentNormalPos2)||IsOccupied(nextNormalPos2))
+        {
+            return !(IsOccupied(currentNormalPos1)||IsOccupied(nextNormalPos1));
+        }
+
         return false;
     }
     #endregion
@@ -138,16 +164,6 @@ public class Player : MovableActor
     IEnumerator SwitchModeCoroutine()
     {
         CanPlayerControl = false;
-        if(CurrentMode == SquareColor.Blue)
-        {
-            CurrentMode = SquareColor.Red;
-            _spriteRenderer.sprite = _redPlayerSprite;
-        }
-        else if(CurrentMode == SquareColor.Red)
-        {
-            CurrentMode = SquareColor.Blue;
-            _spriteRenderer.sprite = _bluePlayerSprite;
-        }
 
         if(!WillFallDown())
         {
@@ -185,13 +201,21 @@ public class Player : MovableActor
             yield break;
         }
 
-        activedCoroutine = Util.MergeList(activedCoroutine, PushActors(nextPos, direction));
+        activedCoroutine = Util.MergeList(activedCoroutine, PushActorsCoroutines(nextPos, direction));
 
-        yield return StartCoroutine(RotateAnimation(direction, rotatePivot));
+        if(CanRotate(direction))
+        {
+            yield return StartCoroutine(RotateAnimation(direction, rotatePivot));
+        }
+        else
+        {
+            //print("Translate!");
+            yield return StartCoroutine(TranslatingAnimation(direction));
+        }
 
         TriggetInteractableActors();
 
-        activedCoroutine = Util.MergeList(activedCoroutine, FallDownActors());
+        activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
 
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
 
@@ -203,7 +227,7 @@ public class Player : MovableActor
         Vector3 prevRotate = transform.rotation.eulerAngles;
         float progress = 0;
         float duration = 0.25f;
-        int rotateDir = GetRotateDir();
+        int rotateDir = GetRotateDir(movingDir);
 
         while(progress < duration)
         {

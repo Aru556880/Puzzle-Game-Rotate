@@ -38,13 +38,13 @@ public class Box : MovableActor
 
         if(!CanBoxMove(movingDir)) yield break;
 
-        activedCoroutine = Util.MergeList(activedCoroutine, PushActors(nextPos, movingDir));
+        activedCoroutine = Util.MergeList(activedCoroutine, PushActorsCoroutines(nextPos, movingDir));
 
         yield return StartCoroutine(TranslatingBoxCoroutine(movingDir));
 
         TriggetInteractableActors();
 
-        activedCoroutine = Util.MergeList(activedCoroutine, FallDownActors());
+        activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
 
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
 

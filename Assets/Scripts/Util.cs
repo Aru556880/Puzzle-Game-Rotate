@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Util : MonoBehaviour
 {
+    //Directions are (1,0), (0,1), (-1,0), (0,-1)
     public static Vector2 ClockwiseNextDir(Vector2 direction)
     {
         return new Vector2(direction.y, -direction.x);

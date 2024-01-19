@@ -24,8 +24,8 @@ public class GameManager : MonoBehaviour
         levelBuilder = FindObjectOfType<LevelBuilder>();
         isMovementKeysPressed = false;
     }
-
-    public void PlayerMove(InputAction.CallbackContext context)
+    #region INPUT_EVENT
+    public void OnPlayerMove(InputAction.CallbackContext context)
     {
         StopCoroutine("KeepPressingKey");
         
@@ -41,6 +41,16 @@ public class GameManager : MonoBehaviour
         }
             
     }
+    public void OnPlayerModeSwitch(InputAction.CallbackContext context)
+    {
+        if(context.performed && !isMovementKeysPressed && _player.CanPlayerControl)
+        {
+            _player.SwitchMode();
+        }
+    }
+    #endregion
+
+    #region COROUTINE
     IEnumerator KeepPressingKey(InputAction.CallbackContext context)
     {
         Vector2 movementInput;
@@ -53,11 +63,5 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
     }
-    public void SwitchPlayerMode(InputAction.CallbackContext context)
-    {
-        if(context.performed && !isMovementKeysPressed && _player.CanPlayerControl)
-        {
-            _player.SwitchMode();
-        }
-    }
+    #endregion
 }
