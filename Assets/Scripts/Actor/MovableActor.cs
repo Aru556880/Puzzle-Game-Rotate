@@ -68,18 +68,6 @@ public class MovableActor : Actor
     {
         return contactWallCenter + _gridSize * 0.5f * (movingDir - GetContactDir(movingDir));
     }
-    int GetRotateDir(Vector2 movingDir)
-    {
-        //1: counterclockwise, -1: clockwise
-        
-        Vector2 contactDir = GetContactDir(movingDir);
-        if(contactDir == Util.ClockwiseNextDir(movingDir))
-            return -1;
-        else if(contactDir == Util.ClockwisePrevDir(movingDir))
-            return 1;
-
-        return 0;
-    }
     float GetRotateAngle(Vector2 movingDir)
     {
         float rotateDir = 0;
@@ -95,7 +83,23 @@ public class MovableActor : Actor
         Vector2 nextNormalPos2 = Util.GetCertainPosition(nextPos,direction2); 
         Vector2 flipPos = Util.GetCertainPosition(nextNormalPos1, direction1);
 
-        if(IsOccupied(nextPos) || !IsOccupied(contactDir)) return 0;
+        //rotate 0 degree = translation
+        if(!IsOccupied(contactPos))
+        {
+            print("Hi"); 
+            return 0;
+        }
+        else if(IsOccupied(nextPos))
+        {
+            List<GameObject> occupyingActors = GetActorsAtPos(nextPos);
+            foreach(GameObject element in occupyingActors)
+            {
+                if(element.TryGetComponent(out MovableActor movableActor) && !movableActor.CanBePushed(movingDir))
+                {
+                    //return 0;
+                }
+            }
+        }
 
         //1: counterclockwise, -1: clockwise
         if(contactDir == Util.ClockwiseNextDir(movingDir))
@@ -115,7 +119,7 @@ public class MovableActor : Actor
         {
             return 0;
         }
-        else if(!IsOccupied(flipPos))
+        else if(!IsOccupied(flipPos) && Mathf.Abs(movingDir.y) == 1 )
         {
             return rotateDir * 180;  
         }
@@ -138,10 +142,12 @@ public class MovableActor : Actor
         }
         else if( IsOccupied(position1) && !IsOccupied(position2) )
         {
+            print(direction1);
             return direction1;
         }
         else if( !IsOccupied(position1) && IsOccupied(position2) )
         {
+            print(direction2);
             return direction2;
         }
 
