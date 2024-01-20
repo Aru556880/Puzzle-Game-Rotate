@@ -47,7 +47,7 @@ public class MovableActor : Actor
     }
     protected List<Coroutine> FallingActorsCoroutines()
     {
-        List<GameObject> fallingActors = GetFallingActor();
+        List<GameObject> fallingActors = GetWillFallDownActors();
         List<Coroutine> activedCoroutine = new ();
 
         foreach(var actor in fallingActors)
@@ -71,6 +71,7 @@ public class MovableActor : Actor
     int GetRotateDir(Vector2 movingDir)
     {
         //1: counterclockwise, -1: clockwise
+        
         Vector2 contactDir = GetContactDir(movingDir);
         if(contactDir == Util.ClockwiseNextDir(movingDir))
             return -1;
@@ -79,12 +80,67 @@ public class MovableActor : Actor
 
         return 0;
     }
-    Vector2 GetContactDir(Vector2 movingDir)
+    float GetRotateAngle(Vector2 movingDir)
     {
+        float rotateDir = 0;
+        Vector2 contactDir = GetContactDir(movingDir);
+        Vector2 contactPos = Util.GetCertainPosition(transform.position, contactDir);
+        Vector2 nextPos = Util.GetCertainPosition(transform.position, movingDir);
         Vector2 direction1 = Util.ClockwiseNextDir(movingDir);
         Vector2 direction2 = Util.ClockwisePrevDir(movingDir);
-        Vector2 position1 = Util.GetCertainPosition(transform.position,direction1); 
-        Vector2 position2 = Util.GetCertainPosition(transform.position,direction2); 
+
+        Vector2 currentNormalPos1 = Util.GetCertainPosition(transform.position,direction1); 
+        Vector2 currentNormalPos2 = Util.GetCertainPosition(transform.position,direction2); 
+        Vector2 nextNormalPos1 = Util.GetCertainPosition(nextPos,direction1); 
+        Vector2 nextNormalPos2 = Util.GetCertainPosition(nextPos,direction2); 
+        Vector2 flipPos = Util.GetCertainPosition(nextNormalPos1, direction1);
+
+        //if(IsOccupied(nextPos) || !IsOccupied(contactDir)) return 0;
+
+        if(IsOccupied(nextPos))
+        {
+            print("No next position");
+            return 0;
+        }
+        else if(!IsOccupied(contactPos))
+        {
+            print("NO");
+            return 0;
+        }
+
+        //1: counterclockwise, -1: clockwise
+        if(contactDir == Util.ClockwiseNextDir(movingDir))
+        {
+            rotateDir = -1;
+            flipPos = nextNormalPos1;
+        }      
+        else if(contactDir == Util.ClockwisePrevDir(movingDir))
+        {
+            rotateDir = 1;
+            flipPos = nextNormalPos2;
+        }
+            
+
+        if((IsOccupied(currentNormalPos1)||IsOccupied(nextNormalPos1)) 
+        && (IsOccupied(currentNormalPos2)||IsOccupied(nextNormalPos2)) )
+        {
+            return 0;
+        }
+        else if(!IsOccupied(flipPos))
+        {
+            return rotateDir * 180;  
+        }
+        else return rotateDir * 90;  
+
+    }
+    Vector2 GetContactDir(Vector2 movingDir)
+    {
+        //For example, if this block is on the ground, then contact direction is down(0,-1)
+
+        Vector2 direction1 = Util.ClockwiseNextDir(movingDir);
+        Vector2 direction2 = Util.ClockwisePrevDir(movingDir);
+        Vector2 position1 = Util.GetCertainPosition(transform.position,direction1);
+        Vector2 position2 = Util.GetCertainPosition(transform.position,direction2);
 
         if( IsOccupied(position1) && IsOccupied(position2) )
         {
@@ -125,7 +181,7 @@ public class MovableActor : Actor
 
         return true;
     }
-    bool CanMoveByPlayerControl(Vector2 movingDir, Vector2 contactWallPos)
+    bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos)
     {
         Vector2 currentPos = transform.position;
         Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);
@@ -148,13 +204,17 @@ public class MovableActor : Actor
     }
     bool IsWalkableWall(Vector2 position)
     {
+        //Currently all walls can be walked on
+
         TileBase tile = GameManager.Instance.levelBuilder.GetTileAt(position);
         if(tile==null) return false;
         
         return true;
     }
-    bool CanRotate(Vector2 movingDir) //Can rotate if : not between walls at current position and next position
+    bool CanRotate(Vector2 movingDir)
     {
+        //Can rotate if : not between walls at current position and next position
+
         Vector2 nextPos = Util.GetCertainPosition(transform.position, movingDir);
         Vector2 direction1 = Util.ClockwiseNextDir(movingDir);
         Vector2 direction2 = Util.ClockwisePrevDir(movingDir);
@@ -180,6 +240,8 @@ public class MovableActor : Actor
     #region COROUTINES
     public IEnumerator MovedByPlayerCoroutine(Vector2 direction)
     {
+        //When player control this block and input WASD, this coroutine will be called
+
         if(Mathf.Abs(direction.x) < 0.5f)
         {
             direction.x = 0;
@@ -194,20 +256,21 @@ public class MovableActor : Actor
         Vector2 contactWallCenter = Util.GetCertainPosition(transform.position, GetContactDir(direction));
         Vector2 rotatePivot = GetRotatePivot(contactWallCenter, direction);
         Vector2 nextPos = Util.GetCertainPosition(transform.position, direction);
+        float rotateAngle = GetRotateAngle(direction);
         
         List<GameObject> fallingActors = new ();
         List<Coroutine> activedCoroutine = new ();
 
-        if(!CanMoveByPlayerControl(direction, contactWallCenter))
+        if(!CanMoveWhenControlled(direction, contactWallCenter))
         {
             yield break;
         }
 
         activedCoroutine = Util.MergeList(activedCoroutine, PushActorsCoroutines(nextPos, direction));
 
-        if(CanRotate(direction))
+        if(rotateAngle != 0)
         {
-            yield return StartCoroutine(RotateAnimation(direction, rotatePivot));
+            yield return StartCoroutine(RotateAnimation(direction, rotatePivot, rotateAngle));
         }
         else
         {
@@ -218,32 +281,31 @@ public class MovableActor : Actor
 
         activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
 
-        yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
+        yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine)); //Wait for other coroutines finished
 
     }
     
-    IEnumerator RotateAnimation(Vector2 movingDir, Vector2 rotatePivot)
+    IEnumerator RotateAnimation(Vector2 movingDir, Vector2 rotatePivot, float rotateAngle)
     {
         Vector3 prevRotate = transform.rotation.eulerAngles;
         float progress = 0;
         float duration = 0.25f;
-        int rotateDir = GetRotateDir(movingDir);
 
         while(progress < duration)
         {
-            float rotateAngle = rotateDir * Time.deltaTime * 90 / duration;
+            float rotateEplison = Time.deltaTime * rotateAngle / duration;
 
             if(progress + Time.deltaTime > 1)
             {
-                rotateAngle =  rotateDir * (duration - progress) * 90 / duration;
+                rotateEplison =  (duration - progress) * rotateAngle / duration;
             }
 
             progress += Time.deltaTime;
-            transform.RotateAround(rotatePivot, new Vector3(0,0,1) , rotateAngle);
+            transform.RotateAround(rotatePivot, new Vector3(0,0,1) , rotateEplison);
             yield return null;
         }
 
-        transform.rotation = Quaternion.Euler(prevRotate + new Vector3(0,0,rotateDir*90));
+        transform.rotation = Quaternion.Euler(prevRotate + new Vector3(0,0,rotateAngle));
         Centralize();
         yield return null;
     }
@@ -272,7 +334,7 @@ public class MovableActor : Actor
 
         List<GameObject> fallingActors = new ();
         List<Coroutine> activedCoroutine = new ();
-        fallingActors = GetFallingActor();
+        fallingActors = GetWillFallDownActors();
         foreach(var actor in fallingActors)
         {
             if(actor.TryGetComponent(out MovableActor movableActor)) 
@@ -327,7 +389,7 @@ public class MovableActor : Actor
     #endregion
 
     #region OTHER_METHODS
-    protected List<GameObject> GetFallingActor()
+    protected List<GameObject> GetWillFallDownActors()
     {
         List<GameObject> actorList = new ();
         foreach(Transform child in _actors)
