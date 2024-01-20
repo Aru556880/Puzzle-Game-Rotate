@@ -95,18 +95,7 @@ public class MovableActor : Actor
         Vector2 nextNormalPos2 = Util.GetCertainPosition(nextPos,direction2); 
         Vector2 flipPos = Util.GetCertainPosition(nextNormalPos1, direction1);
 
-        //if(IsOccupied(nextPos) || !IsOccupied(contactDir)) return 0;
-
-        if(IsOccupied(nextPos))
-        {
-            print("No next position");
-            return 0;
-        }
-        else if(!IsOccupied(contactPos))
-        {
-            print("NO");
-            return 0;
-        }
+        if(IsOccupied(nextPos) || !IsOccupied(contactDir)) return 0;
 
         //1: counterclockwise, -1: clockwise
         if(contactDir == Util.ClockwiseNextDir(movingDir))
@@ -208,8 +197,10 @@ public class MovableActor : Actor
 
         TileBase tile = GameManager.Instance.levelBuilder.GetTileAt(position);
         if(tile==null) return false;
-        
-        return true;
+
+        if(tile.name.Contains("Blue")) return true;
+
+        return false;
     }
     bool CanRotate(Vector2 movingDir)
     {
