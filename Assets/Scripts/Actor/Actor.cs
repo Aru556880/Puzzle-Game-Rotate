@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Actor : MonoBehaviour
+public class Actor : MonoBehaviour //Any Object on the tile map
 {
     protected float _gridSize { get { return GameManager.Instance.levelBuilder.GridSize;} }
     protected Transform _actors { get { return transform==null ? transform : transform.parent; } }
@@ -51,5 +51,32 @@ public class Actor : MonoBehaviour
         }
 
         return actorsList;
+    }
+    public Util.CardinalDirection GetInitCertainDirection(Util.CardinalDirection initDir)
+    {
+        //After rotation, the initial certain direction(up,left,down or right) of this block becomes which direction
+       
+        Util.CardinalDirection currentDir = Util.CardinalDirection.Up;
+        int rotation = (int)transform.rotation.eulerAngles.z / 90 + 4 + (int)initDir;
+
+        if(rotation % 4 == 0)
+        {
+            currentDir = Util.CardinalDirection.Up;
+        }
+        else if(rotation % 4 == 1)
+        {
+            currentDir = Util.CardinalDirection.Left;
+        }
+        else if(rotation % 4 == 2)
+        {
+            currentDir = Util.CardinalDirection.Down;
+        }
+        else if(rotation % 4 == 3)
+        {
+            currentDir = Util.CardinalDirection.Right;
+        }
+
+        return currentDir;
+    
     }
 }

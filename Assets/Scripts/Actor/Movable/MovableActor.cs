@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class MovableActor : Actor
+public class MovableActor : Actor //Objects on the tilemap that can move (be pushed/rotate/fall down aand so on)
 {
     protected bool _isFalling = false;
 
@@ -23,6 +23,7 @@ public class MovableActor : Actor
 
         return !IsOccupied(floorPos);
     }
+    public virtual void ChangeDirection(Vector2 direction){}
     #endregion 
 
     #region GET_COROUTINES_FROM_OTHERS
@@ -96,7 +97,7 @@ public class MovableActor : Actor
             {
                 if(element.TryGetComponent(out MovableActor movableActor) && !movableActor.CanBePushed(movingDir))
                 {
-                    //return 0;
+                    return 0;
                 }
             }
         }
@@ -142,12 +143,10 @@ public class MovableActor : Actor
         }
         else if( IsOccupied(position1) && !IsOccupied(position2) )
         {
-            print(direction1);
             return direction1;
         }
         else if( !IsOccupied(position1) && IsOccupied(position2) )
         {
-            print(direction2);
             return direction2;
         }
 
@@ -304,6 +303,8 @@ public class MovableActor : Actor
 
         transform.rotation = Quaternion.Euler(prevRotate + new Vector3(0,0,rotateAngle));
         Centralize();
+        
+        print(Util.GetOppositeDir( GetComponent<Cage>().LockDirection)) ;
         yield return null;
     }
     public IEnumerator FallDownAnimation()
