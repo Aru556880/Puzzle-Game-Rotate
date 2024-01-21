@@ -80,4 +80,8 @@ public class Actor : MonoBehaviour //Any Object on the tile map
         return currentDir;
     }
     public virtual bool IsBlocked(Vector2 movingDir){ return false;}
+    private void OnDisable() 
+    {
+        StopAllCoroutines();
+    }
 }

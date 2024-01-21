@@ -6,5 +6,7 @@ public interface IInteractableActor
 {
     public bool CanInteract { get; }
 
-    public void Interact(Actor actor);
+    //According the direction parameter, this interactable will be trigger.
+    //For example if the object is trigger at the same tile of caller, then direction = (0,0)
+    public void Interact(Actor actor, Vector2 direction);
 }

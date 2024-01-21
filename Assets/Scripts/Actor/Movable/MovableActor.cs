@@ -407,13 +407,13 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
 
         return actorList;
     }
-    protected void TriggetInteractableActors()
+    protected virtual void TriggetInteractableActors()
     {
         List<GameObject> occupyingActors = GetActorsAtPos(transform.position);
         foreach(GameObject occupyingActor in occupyingActors)
         {
             if(occupyingActor.TryGetComponent(out IInteractableActor interactableActor))
-                interactableActor.Interact(this);
+                interactableActor.Interact(this, Vector2.zero);
         }
     }
     #endregion

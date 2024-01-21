@@ -8,9 +8,17 @@ public class KeyDoor : Actor, IInteractableActor
     public bool HasKey;
     public bool CanInteract { get { return HasKey; }}
 
-    public void Interact(Actor actor)
+    public void Interact(Actor actor, Vector2 direction)
     {
-        print("Key!");
+
+        Vector2 keyOpposDirVec = Util.GetVecDirFromCardinalDir( Util.GetOppositeDir(KeyDirection));
+        if(direction == keyOpposDirVec && actor.TryGetComponent(out Cage cage))
+        {
+            cage.UnLock();
+            HasKey = false;
+
+            gameObject.SetActive(false); //This may replace by animation of opening door
+        }
     }
 
     void Start()
