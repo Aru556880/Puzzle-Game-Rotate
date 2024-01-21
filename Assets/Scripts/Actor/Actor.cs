@@ -19,7 +19,7 @@ public class Actor : MonoBehaviour //Any Object on the tile map
     {
         return GameManager.Instance.levelBuilder.IsWall(position);
     }
-    protected bool IsOccupied(Vector2 position) //The position is occupied by the wall or some object
+    protected bool IsOccupiedAt(Vector2 position) //The position is occupied by the wall or some object
     {
         if(IsWall(position)) return true;
         
@@ -33,6 +33,7 @@ public class Actor : MonoBehaviour //Any Object on the tile map
             {
                 return true;
             }
+
         }
 
         return false;
@@ -77,6 +78,6 @@ public class Actor : MonoBehaviour //Any Object on the tile map
         }
 
         return currentDir;
-    
     }
+    public virtual bool IsBlocked(Vector2 movingDir){ return false;}
 }

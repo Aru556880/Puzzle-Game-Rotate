@@ -17,14 +17,21 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
 
         if(Player.Instance.CurrentControlActor==this) //current control actor is this
         {
-            return !IsOccupied(floorPos) && !IsWalkableWall(contactPos1) 
+            return !IsOccupiedAt(floorPos) && !IsWalkableWall(contactPos1) 
             && !IsWalkableWall(contactPos2) && !IsWalkableWall(contactPos3); //can stop at wall
         }
 
-        return !IsOccupied(floorPos);
+        return !IsOccupiedAt(floorPos);
     }
     public virtual void ChangeDirection(Vector2 direction){}
     #endregion 
+
+    #region OVERRIDE
+    public override bool IsBlocked(Vector2 movingDir)
+    {
+        return !CanBePushed(movingDir);
+    }
+    #endregion
 
     #region GET_COROUTINES_FROM_OTHERS
     protected List<Coroutine> PushActorsCoroutines(Vector2 pushedPos, Vector2 movingDir) 
@@ -85,17 +92,17 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
         Vector2 flipPos = Util.GetCertainPosition(nextNormalPos1, direction1);
 
         //rotate 0 degree = translation
-        if(!IsOccupied(contactPos))
+        if(!IsOccupiedAt(contactPos))
         {
             print("Hi"); 
             return 0;
         }
-        else if(IsOccupied(nextPos))
+        else if(IsOccupiedAt(nextPos))
         {
             List<GameObject> occupyingActors = GetActorsAtPos(nextPos);
             foreach(GameObject element in occupyingActors)
             {
-                if(element.TryGetComponent(out MovableActor movableActor) && !movableActor.CanBePushed(movingDir))
+                if(element.TryGetComponent(out Actor actor) && actor.IsBlocked(movingDir))
                 {
                     return 0;
                 }
@@ -115,12 +122,12 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
         }
             
 
-        if((IsOccupied(currentNormalPos1)||IsOccupied(nextNormalPos1)) 
-        && (IsOccupied(currentNormalPos2)||IsOccupied(nextNormalPos2)) )
+        if((IsOccupiedAt(currentNormalPos1)||IsOccupiedAt(nextNormalPos1)) 
+        && (IsOccupiedAt(currentNormalPos2)||IsOccupiedAt(nextNormalPos2)) )
         {
             return 0;
         }
-        else if(!IsOccupied(flipPos) && Mathf.Abs(movingDir.y) == 1 )
+        else if(!IsOccupiedAt(flipPos) && Mathf.Abs(movingDir.y) == 1 )
         {
             return rotateDir * 180;  
         }
@@ -136,16 +143,16 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
         Vector2 position1 = Util.GetCertainPosition(transform.position,direction1);
         Vector2 position2 = Util.GetCertainPosition(transform.position,direction2);
 
-        if( IsOccupied(position1) && IsOccupied(position2) )
+        if( IsOccupiedAt(position1) && IsOccupiedAt(position2) )
         {
             //Debug.Log("The square is between walls!");
             return Vector2.zero;
         }
-        else if( IsOccupied(position1) && !IsOccupied(position2) )
+        else if( IsOccupiedAt(position1) && !IsOccupiedAt(position2) )
         {
             return direction1;
         }
-        else if( !IsOccupied(position1) && IsOccupied(position2) )
+        else if( !IsOccupiedAt(position1) && IsOccupiedAt(position2) )
         {
             return direction2;
         }
@@ -156,7 +163,7 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
     #endregion
     
     #region CHECK_MOVING
-    public bool CanBePushed(Vector2 movingDir)
+    bool CanBePushed(Vector2 movingDir)
     {
         Vector2 currentPos = transform.position;
         Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);
@@ -165,11 +172,11 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
         else if(IsWall(nextPos)) return false;
 
         List<GameObject> occupyingActors = GetActorsAtPos(nextPos);
-        foreach(var actor in occupyingActors)
+        foreach(var element in occupyingActors)
         {
-            if(actor.TryGetComponent(out MovableActor movableActor))
+            if(element.TryGetComponent(out Actor actor))
             {
-                if(!movableActor.CanBePushed(movingDir)) return false;
+                if(actor.IsBlocked(movingDir)) return false;
             }
         }
 
@@ -181,16 +188,16 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
         Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);
 
         if(movingDir.x == 0 && movingDir.y == 0) return false;
-        else if(!IsOccupied(contactWallPos)) return false;
+        else if(!IsOccupiedAt(contactWallPos)) return false;
         else if(IsWall(nextPos)) return false;
 
 
         List<GameObject> occupyingActors = GetActorsAtPos(nextPos);
-        foreach(var actor in occupyingActors)
+        foreach(var element in occupyingActors)
         {
-            if(actor.TryGetComponent(out MovableActor movableActor))
+            if(element.TryGetComponent(out Actor actor))
             {
-                if(!movableActor.CanBePushed(movingDir)) return false;
+                if(actor.IsBlocked(movingDir)) return false;
             }
         }
 
@@ -220,13 +227,13 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
         Vector2 nextNormalPos1 = Util.GetCertainPosition(nextPos,direction1); 
         Vector2 nextNormalPos2 = Util.GetCertainPosition(nextPos,direction2); 
 
-        if(IsOccupied(currentNormalPos1)||IsOccupied(nextNormalPos1))
+        if(IsOccupiedAt(currentNormalPos1)||IsOccupiedAt(nextNormalPos1))
         {
-            return !(IsOccupied(currentNormalPos2)||IsOccupied(nextNormalPos2));
+            return !(IsOccupiedAt(currentNormalPos2)||IsOccupiedAt(nextNormalPos2));
         }
-        else if(IsOccupied(currentNormalPos2)||IsOccupied(nextNormalPos2))
+        else if(IsOccupiedAt(currentNormalPos2)||IsOccupiedAt(nextNormalPos2))
         {
-            return !(IsOccupied(currentNormalPos1)||IsOccupied(nextNormalPos1));
+            return !(IsOccupiedAt(currentNormalPos1)||IsOccupiedAt(nextNormalPos1));
         }
 
         return false;

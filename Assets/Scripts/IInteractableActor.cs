@@ -4,5 +4,7 @@ using UnityEngine;
 
 public interface IInteractableActor
 {
+    public bool CanInteract { get; }
+
     public void Interact(Actor actor);
 }
