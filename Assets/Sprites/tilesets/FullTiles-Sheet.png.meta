@@ -907,6 +907,48 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: FullTiles-Sheet_38
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d40debe3f25e9e34c938365974531ec9
+      internalID: -2049668691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FullTiles-Sheet_39
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 901866bb5b9a9484eb5adfec40408df2
+      internalID: 312334562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -950,6 +992,8 @@ TextureImporter:
       FullTiles-Sheet_35: 743377220
       FullTiles-Sheet_36: -1797002839
       FullTiles-Sheet_37: 599448540
+      FullTiles-Sheet_38: -2049668691
+      FullTiles-Sheet_39: 312334562
       FullTiles-Sheet_4: 582847477
       FullTiles-Sheet_5: 1534701981
       FullTiles-Sheet_6: 689859343
