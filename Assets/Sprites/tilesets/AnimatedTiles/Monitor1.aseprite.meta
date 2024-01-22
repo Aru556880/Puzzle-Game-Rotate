@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ec47c4b7d3239534983636540beb4f4e
+guid: 0cdeaa48bf3a3be4c8ffa367016ea4b2
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,7 +119,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: FullTiles
+  - name: Monitor1
     originalName: 
     pivot: {x: 0, y: 0}
     alignment: 9
@@ -128,9 +128,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 0
-      height: 0
-    spriteID: 3c7ee766cb0c75d4e90572a09b506aac
+      width: 32
+      height: 32
+    spriteID: f4f597ff2c62b214a9024ac00549e09b
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -138,27 +138,27 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: -252, y: -252}
+    uvTransform: {x: 4, y: 4}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -1893281404
-    name: FullTiles
+    guid: -215681219
+    name: Monitor1
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: FullTiles
+    - name: Monitor1
       frameIndex: 0
       cellRect:
         x: 0
-        y: 224
-        width: 256
-        height: 256
-      spriteId: 3c7ee766cb0c75d4e90572a09b506aac
+        y: 0
+        width: 32
+        height: 32
+      spriteId: f4f597ff2c62b214a9024ac00549e09b
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 832, y: 480}
+  canvasSize: {x: 32, y: 32}
