@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public bool CanPlayerControl;
     
     SpriteRenderer _spriteRenderer;
+    [SerializeField] Camera mainCamera;
     void Awake() 
     {
         if(Instance!=null)
@@ -29,6 +30,15 @@ public class Player : MonoBehaviour
     {
         HeadDirection = new Vector2Int(1,0);
         CanPlayerControl = true;
+    }
+
+    private void Update()
+    {
+        /* TODO: implement this with cinemachine instead: too much shaking to the screen */
+        Vector3 temp;
+        temp = CurrentControlActor.transform.position;
+        temp.z = mainCamera.transform.position.z;
+        mainCamera.transform.position = temp;
     }
 
     #region PLAYER_RELATED

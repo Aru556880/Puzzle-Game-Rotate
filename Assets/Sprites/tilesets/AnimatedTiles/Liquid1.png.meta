@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a1e0417f36144684380f287b17e39906
+guid: ba348187145d54c459743ac84ef509b5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,211 +110,169 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SpecialTiles-Sheet_0
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4c5c7870a9dfec34a890a62cca4b77c5
-      internalID: -2110862912
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SpecialTiles-Sheet_1
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 781353932f6956b4db528aca63bdf92b
-      internalID: 1862072510
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SpecialTiles-Sheet_2
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 472fbdb5fe2629b4ca1c6cd38a39072f
-      internalID: 862522991
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SpecialTiles-Sheet_3
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d7c1a1aa33563a6469677b902b0149e2
-      internalID: 142661462
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SpecialTiles-Sheet_4
-      rect:
-        serializedVersion: 2
-        x: 160
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e828675bfe68bcf45a675b3a474ec013
-      internalID: -258061356
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SpecialTiles-Sheet_5
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e1a9a18147cec0848b787a2f9bb09f02
-      internalID: 429379827
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SpecialTiles-Sheet_6
-      rect:
-        serializedVersion: 2
-        x: 224
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d52d6daef411c68449cad2789420ee4e
-      internalID: -1717019861
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SpecialTiles-Sheet_7
-      rect:
-        serializedVersion: 2
-        x: 256
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 747bedb31fc965e4793201bfe8a52a07
-      internalID: 1844488191
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SpecialTiles-Sheet_8
+      name: Liquid1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 160
+        height: 224
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 25327d91d272447489f0f78c742e4f47
-      internalID: 695082400
+      spriteID: 9e937751ff7b3cb4d96c4f05ed494e96
+      internalID: 1676629869
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SpecialTiles-Sheet_9
+      name: Liquid1_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 160
         y: 0
-        width: 32
-        height: 32
+        width: 160
+        height: 224
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 37932dd0b8040a249b42e6e7d6a11e05
-      internalID: -618012292
+      spriteID: 3401b3695065c1f4a9f96acc73d5cb59
+      internalID: -1632583081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Liquid1_2
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 160
+        height: 224
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca3ab13d391a89240b30ed032525ec6b
+      internalID: 792128997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Liquid1_3
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 0
+        width: 160
+        height: 224
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dffac5311c91fc64f9a4051e6ed2b13a
+      internalID: 1111687837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Liquid1_4
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 160
+        height: 224
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c975441f71aa52044ab40b62483e69a2
+      internalID: -1329857573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Liquid1_5
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 0
+        width: 160
+        height: 224
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61d2f8c5b66335f4999c8c2c7b9a5b38
+      internalID: -1826632833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Liquid1_6
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 0
+        width: 160
+        height: 224
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90602a8443a622e4cb9d07fae1153041
+      internalID: 1052402595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Liquid1_7
+      rect:
+        serializedVersion: 2
+        x: 1120
+        y: 0
+        width: 160
+        height: 224
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65e7ca10d4c756e43a4fb49f5d462cb1
+      internalID: -2073186287
       vertices: []
       indices: 
       edges: []
@@ -330,16 +288,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      SpecialTiles-Sheet_0: -2110862912
-      SpecialTiles-Sheet_1: 1862072510
-      SpecialTiles-Sheet_2: 862522991
-      SpecialTiles-Sheet_3: 142661462
-      SpecialTiles-Sheet_4: -258061356
-      SpecialTiles-Sheet_5: 429379827
-      SpecialTiles-Sheet_6: -1717019861
-      SpecialTiles-Sheet_7: 1844488191
-      SpecialTiles-Sheet_8: 695082400
-      SpecialTiles-Sheet_9: -618012292
+      Liquid1_0: 1676629869
+      Liquid1_1: -1632583081
+      Liquid1_2: 792128997
+      Liquid1_3: 1111687837
+      Liquid1_4: -1329857573
+      Liquid1_5: -1826632833
+      Liquid1_6: 1052402595
+      Liquid1_7: -2073186287
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
