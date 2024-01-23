@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 {
     static public Player Instance;
     public Vector2Int HeadDirection;
-    public MovableActor CurrentControlActor;
+    public GameObject CurrentControlActor;
     public bool CanPlayerControl;
     
     SpriteRenderer _spriteRenderer;
@@ -61,15 +61,34 @@ public class Player : MonoBehaviour
     {
         CanPlayerControl = false;
 
-        yield return null;
+        if(CurrentControlActor.TryGetComponent(out CharacterFree characterFree))
+        {
+            characterFree.TryPossess();
+        }
+        else if(CurrentControlActor.TryGetComponent(out MovableActor movableActor))
+        {
+            if(movableActor.IsPossessed(out _)) 
+            {
+                movableActor.StopPossessing();
+            }
+            else Debug.Log("Cannot stop possessing an unpossessed actor!");
+        }
         
+        yield return null;
         CanPlayerControl = true;
     }
     IEnumerator PlayerMovingCoroutine(Vector2 direction)
     {
         CanPlayerControl = false;
 
-        yield return StartCoroutine(CurrentControlActor.MovedByPlayerCoroutine(direction));
+        if(CurrentControlActor.TryGetComponent(out MovableActor movableActor))
+        {
+            yield return StartCoroutine(movableActor.MovedByPlayerCoroutine(direction));
+        }
+        else if(CurrentControlActor.TryGetComponent(out CharacterFree characterFree))
+        {
+            print("TODO: Free Character Moving");
+        }
 
         CanPlayerControl = true;
     }

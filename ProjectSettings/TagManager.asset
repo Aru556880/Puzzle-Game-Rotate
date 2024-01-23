@@ -47,12 +47,12 @@ TagManager:
   - name: Tilemap
     uniqueID: 4080001935
     locked: 0
-  - name: Character
+  - name: CharacterBody
     uniqueID: 2299709801
     locked: 0
   - name: Block
     uniqueID: 2502630017
     locked: 0
-  - name: test
+  - name: CharacterFree
     uniqueID: 3833737649
     locked: 0

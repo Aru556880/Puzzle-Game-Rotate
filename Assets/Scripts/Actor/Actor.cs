@@ -28,7 +28,7 @@ public class Actor : MonoBehaviour //Any Object on the tile map
             Vector2 actorGridPos = GetGridPos(actor.transform.position);
             Vector2 targetGridPos = GetGridPos(position);
 
-            if(targetGridPos != actorGridPos) continue;
+            if(targetGridPos != actorGridPos || !actor.gameObject.activeSelf) continue;
             if(actor.TryGetComponent(out MovableActor _))
             {
                 return true;

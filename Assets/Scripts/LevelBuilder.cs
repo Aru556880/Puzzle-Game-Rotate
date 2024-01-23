@@ -9,10 +9,10 @@ public class LevelBuilder : MonoBehaviour
     {
         get { return GetWorldFromGrid(new Vector2Int(1,0)).x - GetWorldFromGrid(new Vector2Int(0,0)).x; }
     }
-
+    public GameObject AllActors;
     [SerializeField] Grid grid;
     [SerializeField] Tilemap tilemap;
-    [SerializeField] GameObject actors;
+    
     public Vector2Int GetGridFromWorld(Vector2 worldPos)
     {
         return (Vector2Int)tilemap.WorldToCell(worldPos);
@@ -28,7 +28,7 @@ public class LevelBuilder : MonoBehaviour
 
     void Initialization()
     {
-        foreach(Transform child in actors.transform)
+        foreach(Transform child in AllActors.transform)
         {
             Vector2Int gridPosition = GetGridFromWorld(child.transform.position);
             child.transform.position = GetWorldFromGrid(gridPosition);
