@@ -28,4 +28,37 @@ public class CharacterBody : MovableActor
             IsEmpty = true;
         }
     }
+
+    #region IMPLEMENT_ABSTRACT_METHODS
+    public override IEnumerator MovedByPlayerCoroutine(Vector2 direction)
+    {
+        //When player control this block and input WASD, this coroutine will be called
+
+        if(Mathf.Abs(direction.x) < 0.5f)
+        {
+            direction.x = 0;
+        }
+        else 
+        {
+            direction.y = 0;
+        }
+
+        direction.Normalize();
+        List<Coroutine> activedCoroutine = new ();
+
+        if(!CanMoveWhenControlled(direction, Vector2.zero))
+        {
+            yield break;
+        }
+        
+        yield return StartCoroutine(TranslatingAnimation(direction));
+
+        //TriggerInteractableActors();
+
+        activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
+
+        yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine)); //Wait for other coroutines finished
+
+    }
+    #endregion
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cage : MovableActor
+public class Cage : SquareActor
 {
     public bool IsLocked;
     public Util.CardinalDirection LockDirection { get {return GetInitCertainDirection(Util.CardinalDirection.Left); }}
@@ -68,9 +68,9 @@ public class Cage : MovableActor
     {
         IsLocked = true;
     }
-    protected override void TriggetInteractableActors()
+    protected override void TriggerInteractableActors()
     {
-        base.TriggetInteractableActors();
+        base.TriggerInteractableActors();
 
         Vector2 lockDir = Util.GetVecDirFromCardinalDir(LockDirection);
         List<GameObject> occupyingActors = GetActorsAtPos((Vector2)transform.position + lockDir);

@@ -5,9 +5,22 @@ using UnityEngine.Tilemaps;
 
 //Currently MovableActor is assumed to be the only thing that can be possessed,
 //If there are others thing can also be possessed, we need to use Interface instead
-public class MovableActor : Actor //Objects on the tilemap that can move (be pushed/rotate/fall down aand so on)
+public abstract class MovableActor : Actor //Objects on the tilemap that can move (be pushed/rotate/fall down aand so on)
 {
     protected bool _isFalling = false;
+
+    #region OVERRIDE
+    public override bool IsBlocked(Vector2 movingDir)
+    {
+        return !CanBePushed(movingDir);
+    }
+    #endregion
+
+    //Subclasses must implement their abstract functions
+    #region ABSTRACT_METHODS
+    public abstract IEnumerator MovedByPlayerCoroutine(Vector2 direction);
+
+    #endregion
 
     #region VIRTUAL_METHOD_POSSESS_RELATED
     public virtual bool IsPossessed(out CharacterFree possessingChar) //This block is possessed if CharacterFree is set to be its child
@@ -25,7 +38,7 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
         return false;
     }
     public virtual bool CanBePossessed{ get{ return !IsPossessed(out _); }}
-    public virtual void BePossessed(CharacterFree possessingChar)
+    public virtual void BePossessed(CharacterFree possessingChar) //Now we control this movable actor
     {
         if(!IsPossessed(out _)) 
         {
@@ -34,7 +47,7 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
             Player.Instance.CurrentControlActor = gameObject;
         }
     }
-    public virtual void StopPossessing()
+    public virtual void StopPossessing() //Leave the possessed movable actor
     {   
         if(IsPossessed(out CharacterFree possessingChar))
         {
@@ -47,28 +60,18 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
     #endregion
 
     #region VIRTUAL_METHOD_MOVING_RELATED
-    public virtual bool WillFallDown() //Check if this block will fall down for current map
+    protected virtual bool WillFallDown() //Check if this block will fall down 
     {
         Vector2 floorPos = Util.GetCertainPosition(transform.position, new Vector2(0,-1));
-        Vector2 contactPos1 = Util.GetCertainPosition(transform.position, new Vector2(1,0));
-        Vector2 contactPos2 = Util.GetCertainPosition(transform.position, new Vector2(-1,0));
-        Vector2 contactPos3 = Util.GetCertainPosition(transform.position, new Vector2(0,1));
 
-        if(Player.Instance.CurrentControlActor == gameObject) //current control actor is this
-        {
-            return !IsOccupiedAt(floorPos) && !IsWalkableWall(contactPos1) 
-            && !IsWalkableWall(contactPos2) && !IsWalkableWall(contactPos3); //can stop at wall
-        }
-
-        return !IsOccupiedAt(floorPos);
+        return !IsOccupiedAt(floorPos); //Defult: Check it is on the ground or not
     }
-    protected virtual bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos)
+    protected virtual bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos) //Defult: Only check next position is blocked or not
     {
         Vector2 currentPos = transform.position;
         Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);
 
         if(movingDir.x == 0 && movingDir.y == 0) return false;
-        else if(!IsOccupiedAt(contactWallPos)) return false;
         else if(IsWall(nextPos)) return false;
 
 
@@ -83,58 +86,37 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
 
         return true;
     }
-    public virtual IEnumerator MovedByPlayerCoroutine(Vector2 direction)
+    
+    protected virtual bool CanBePushed(Vector2 movingDir)
     {
-        //When player control this block and input WASD, this coroutine will be called
+        Vector2 currentPos = transform.position;
+        Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);
 
-        if(Mathf.Abs(direction.x) < 0.5f)
-        {
-            direction.x = 0;
-        }
-        else 
-        {
-            direction.y = 0;
-        }
+        if(movingDir.x == 0 && movingDir.y == 0) return false;
+        else if(IsWall(nextPos)) return false;
 
-        direction.Normalize();
-        Vector2 abovePos = Util.GetCertainPosition(transform.position, new Vector2(0,1));
-        Vector2 contactWallCenter = Util.GetCertainPosition(transform.position, GetContactDir(direction));
-        Vector2 rotatePivot = GetRotatePivot(contactWallCenter, direction);
-        Vector2 nextPos = Util.GetCertainPosition(transform.position, direction);
-        float rotateAngle = GetRotateAngle(direction);
-        
-        List<GameObject> fallingActors = new ();
-        List<Coroutine> activedCoroutine = new ();
-
-        if(!CanMoveWhenControlled(direction, contactWallCenter))
+        List<GameObject> occupyingActors = GetActorsAtPos(nextPos);
+        foreach(var element in occupyingActors)
         {
-            yield break;
+            if(element.TryGetComponent(out Actor actor))
+            {
+                if(actor.IsBlocked(movingDir)) return false;
+            }
         }
 
-        activedCoroutine = Util.MergeList(activedCoroutine, PushActorsCoroutines(nextPos, direction));
-
-        if(rotateAngle != 0)
-        {
-            yield return StartCoroutine(RotateAnimation(direction, rotatePivot, rotateAngle));
-        }
-        else
-        {
-            yield return StartCoroutine(TranslatingAnimation(direction));
-        }
-
-        TriggetInteractableActors();
-
-        activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
-
-        yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine)); //Wait for other coroutines finished
-
+        return true;
     }
     #endregion 
 
-    #region OVERRIDE
-    public override bool IsBlocked(Vector2 movingDir)
+    #region VIRTUAL_METHOD_INTERACT_RELATED
+    protected virtual void TriggerInteractableActors()
     {
-        return !CanBePushed(movingDir);
+        List<GameObject> occupyingActors = GetActorsAtPos(transform.position);
+        foreach(GameObject occupyingActor in occupyingActors)
+        {
+            if(occupyingActor.TryGetComponent(out IInteractableActor interactableActor))
+                interactableActor.Interact(this, Vector2.zero);
+        }
     }
     #endregion
 
@@ -151,6 +133,8 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
         {
             if(actor.TryGetComponent(out MovableActor movableActor)) //Maybe use interface here
             {
+                if(actor.TryGetComponent(out CharacterFree _)) continue;
+
                 Coroutine coroutine = movableActor.StartCoroutine(movableActor.BePushingCoroutine(movingDir));
                 if(!activedCoroutine.Contains(coroutine)) activedCoroutine.Add(coroutine);
             }
@@ -176,157 +160,7 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
     }
     #endregion 
 
-    #region GET_SOMETHING_FOR_ROTATING
-    Vector2 GetRotatePivot(Vector2 contactWallCenter, Vector2 movingDir)
-    {
-        return contactWallCenter + _gridSize * 0.5f * (movingDir - GetContactDir(movingDir));
-    }
-    float GetRotateAngle(Vector2 movingDir)
-    {
-        float rotateDir = 0;
-        Vector2 contactDir = GetContactDir(movingDir);
-        Vector2 contactPos = Util.GetCertainPosition(transform.position, contactDir);
-        Vector2 nextPos = Util.GetCertainPosition(transform.position, movingDir);
-        Vector2 direction1 = Util.ClockwiseNextDir(movingDir);
-        Vector2 direction2 = Util.ClockwisePrevDir(movingDir);
-
-        Vector2 currentNormalPos1 = Util.GetCertainPosition(transform.position,direction1); 
-        Vector2 currentNormalPos2 = Util.GetCertainPosition(transform.position,direction2); 
-        Vector2 nextNormalPos1 = Util.GetCertainPosition(nextPos,direction1); 
-        Vector2 nextNormalPos2 = Util.GetCertainPosition(nextPos,direction2); 
-        Vector2 flipPos = Util.GetCertainPosition(nextNormalPos1, direction1);
-
-        //rotate 0 degree = translation
-        if(!IsOccupiedAt(contactPos))
-        {
-            print("Hi"); 
-            return 0;
-        }
-        else if(IsOccupiedAt(nextPos))
-        {
-            List<GameObject> occupyingActors = GetActorsAtPos(nextPos);
-            foreach(GameObject element in occupyingActors)
-            {
-                if(element.TryGetComponent(out Actor actor) && actor.IsBlocked(movingDir))
-                {
-                    return 0;
-                }
-            }
-        }
-
-        //1: counterclockwise, -1: clockwise
-        if(contactDir == Util.ClockwiseNextDir(movingDir))
-        {
-            rotateDir = -1;
-            flipPos = nextNormalPos1;
-        }      
-        else if(contactDir == Util.ClockwisePrevDir(movingDir))
-        {
-            rotateDir = 1;
-            flipPos = nextNormalPos2;
-        }
-            
-
-        if((IsOccupiedAt(currentNormalPos1)||IsOccupiedAt(nextNormalPos1)) 
-        && (IsOccupiedAt(currentNormalPos2)||IsOccupiedAt(nextNormalPos2)) )
-        {
-            return 0;
-        }
-        else if(!IsOccupiedAt(flipPos) && Mathf.Abs(movingDir.y) == 1 )
-        {
-            return rotateDir * 180;  
-        }
-        else return rotateDir * 90;  
-
-    }
-    Vector2 GetContactDir(Vector2 movingDir)
-    {
-        //For example, if this block is on the ground, then contact direction is down(0,-1)
-
-        Vector2 direction1 = Util.ClockwiseNextDir(movingDir);
-        Vector2 direction2 = Util.ClockwisePrevDir(movingDir);
-        Vector2 position1 = Util.GetCertainPosition(transform.position,direction1);
-        Vector2 position2 = Util.GetCertainPosition(transform.position,direction2);
-
-        if( IsOccupiedAt(position1) && IsOccupiedAt(position2) )
-        {
-            //Debug.Log("The square is between walls!");
-            return Vector2.zero;
-        }
-        else if( IsOccupiedAt(position1) && !IsOccupiedAt(position2) )
-        {
-            return direction1;
-        }
-        else if( !IsOccupiedAt(position1) && IsOccupiedAt(position2) )
-        {
-            return direction2;
-        }
-
-        Debug.Log("Cannot get contact direction!");
-        return new Vector2(-1,-1);
-    }
-    #endregion
-    
-    #region CHECK_MOVING
-    bool CanBePushed(Vector2 movingDir)
-    {
-        Vector2 currentPos = transform.position;
-        Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);
-
-        if(movingDir.x == 0 && movingDir.y == 0) return false;
-        else if(IsWall(nextPos)) return false;
-
-        List<GameObject> occupyingActors = GetActorsAtPos(nextPos);
-        foreach(var element in occupyingActors)
-        {
-            if(element.TryGetComponent(out Actor actor))
-            {
-                if(actor.IsBlocked(movingDir)) return false;
-            }
-        }
-
-        return true;
-    }
-    bool IsWalkableWall(Vector2 position)
-    {
-        //Currently all walls can be walked on
-
-        TileBase tile = GameManager.Instance.levelBuilder.GetTileAt(position);
-        if(tile==null) return false;
-
-        if(tile.name.Contains("Blue")) return true;
-
-        return false;
-    }
-    #endregion
-
     #region COROUTINES
-    
-    IEnumerator RotateAnimation(Vector2 movingDir, Vector2 rotatePivot, float rotateAngle)
-    {
-        Vector3 prevRotate = transform.rotation.eulerAngles;
-        float progress = 0;
-        float duration = 0.25f;
-
-        while(progress < duration)
-        {
-            float rotateEplison = Time.deltaTime * rotateAngle / duration;
-
-            if(progress + Time.deltaTime > 1)
-            {
-                rotateEplison =  (duration - progress) * rotateAngle / duration;
-            }
-
-            progress += Time.deltaTime;
-            transform.RotateAround(rotatePivot, new Vector3(0,0,1) , rotateEplison);
-            yield return null;
-        }
-
-        transform.rotation = Quaternion.Euler(prevRotate + new Vector3(0,0,rotateAngle));
-        Centralize();
-        
-        yield return null;
-    }
     public IEnumerator FallDownAnimation()
     {
         if(_isFalling) yield break;
@@ -362,7 +196,7 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
             }
         }
 
-        TriggetInteractableActors();
+        TriggerInteractableActors();
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
         _isFalling = false;
     }
@@ -388,7 +222,6 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
     {
         List<Coroutine> activedCoroutine = new ();
         Vector2 nextPos = Util.GetCertainPosition(transform.position, movingDir);
-        Vector2 contactWallCenter = Util.GetCertainPosition(transform.position, GetContactDir(movingDir));
 
         if(!CanBePushed(movingDir)) yield break;
 
@@ -396,7 +229,7 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
 
         yield return StartCoroutine(TranslatingAnimation(movingDir));
 
-        TriggetInteractableActors();
+        TriggerInteractableActors();
 
         activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
 
@@ -419,15 +252,6 @@ public class MovableActor : Actor //Objects on the tilemap that can move (be pus
         }
 
         return actorList;
-    }
-    protected virtual void TriggetInteractableActors()
-    {
-        List<GameObject> occupyingActors = GetActorsAtPos(transform.position);
-        foreach(GameObject occupyingActor in occupyingActors)
-        {
-            if(occupyingActor.TryGetComponent(out IInteractableActor interactableActor))
-                interactableActor.Interact(this, Vector2.zero);
-        }
     }
     #endregion
 }

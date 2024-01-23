@@ -31,6 +31,8 @@ public class Actor : MonoBehaviour //Any Object on the tile map
             if(targetGridPos != actorGridPos || !actor.gameObject.activeSelf) continue;
             if(actor.TryGetComponent(out MovableActor _))
             {
+                if(actor.TryGetComponent(out CharacterFree _)) continue;
+                
                 return true;
             }
 
