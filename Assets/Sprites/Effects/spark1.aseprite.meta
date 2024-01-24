@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fc287b2c148538a44aaafc6eff973e3e
+guid: 40b6b19f9fd766c4893d1181fc894a44
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -119,18 +119,18 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: PlayerFree
+  - name: spark1_Frame_0
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.8, y: -0.3}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 64
-      height: 58
-    spriteID: 28ac082c0ad71d84eb424ff8b196c46a
+      width: 5
+      height: 10
+    spriteID: e163f68c3bac73a4085b698cbe7bd531
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -139,18 +139,18 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: PlayerFree_Frame_1
+  - name: spark1_Frame_2
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.6, y: -0.375}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 76
+      x: 17
       y: 4
-      width: 64
-      height: 58
-    spriteID: 214ecadf531b2cf4baf551e61142f456
+      width: 5
+      height: 8
+    spriteID: 784f95a10e7529140a186b7d984ff518
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -158,59 +158,19 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 76, y: 4}
-  - name: PlayerFree_Frame_2
+    uvTransform: {x: 17, y: 4}
+  - name: spark1_Frame_4
     originalName: 
-    pivot: {x: 0.5, y: 0}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 148
-      y: 4
-      width: 64
-      height: 58
-    spriteID: 57909ca1c111b9d48b8c210e863255d9
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 148, y: 4}
-  - name: PlayerFree_Frame_3
-    originalName: 
-    pivot: {x: 0.5, y: 0}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 148
-      y: 70
-      width: 64
-      height: 57
-    spriteID: e9212633bda017143b308d5238447eec
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 148, y: 70}
-  - name: PlayerFree_Frame_4
-    originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.6666667, y: -1.2}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 70
-      width: 64
-      height: 58
-    spriteID: ad5e8b0f41955b64c8eb09a5616a0b05
+      y: 22
+      width: 3
+      height: 5
+    spriteID: d96fe5a6564799247b5434a65d700a82
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -218,87 +178,43 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 70}
-  - name: PlayerFree_Frame_5
-    originalName: 
-    pivot: {x: 0.5, y: 0}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 76
-      y: 70
-      width: 64
-      height: 58
-    spriteID: fd7dea5b0c5b50347b0287c6d4f458d8
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 76, y: 70}
+    uvTransform: {x: 4, y: 22}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -1312648993
-    name: PlayerFree
+    guid: 1346096930
+    name: spark1
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: PlayerFree_Frame_0
+    - name: spark1_Frame_0
       frameIndex: 0
       cellRect:
-        x: 0
-        y: 0
-        width: 64
-        height: 58
-      spriteId: 28ac082c0ad71d84eb424ff8b196c46a
-    - name: PlayerFree_Frame_1
-      frameIndex: 1
-      cellRect:
-        x: 0
-        y: 0
-        width: 64
-        height: 58
-      spriteId: 214ecadf531b2cf4baf551e61142f456
-    - name: PlayerFree_Frame_2
+        x: 4
+        y: 3
+        width: 5
+        height: 10
+      spriteId: e163f68c3bac73a4085b698cbe7bd531
+    - name: spark1_Frame_2
       frameIndex: 2
       cellRect:
-        x: 0
-        y: 0
-        width: 64
-        height: 58
-      spriteId: 57909ca1c111b9d48b8c210e863255d9
-    - name: PlayerFree_Frame_3
-      frameIndex: 3
-      cellRect:
-        x: 0
-        y: 0
-        width: 64
-        height: 57
-      spriteId: e9212633bda017143b308d5238447eec
-    - name: PlayerFree_Frame_4
+        x: 5
+        y: 3
+        width: 5
+        height: 8
+      spriteId: 784f95a10e7529140a186b7d984ff518
+    - name: spark1_Frame_4
       frameIndex: 4
       cellRect:
-        x: 0
-        y: 0
-        width: 64
-        height: 58
-      spriteId: ad5e8b0f41955b64c8eb09a5616a0b05
-    - name: PlayerFree_Frame_5
-      frameIndex: 5
-      cellRect:
-        x: 0
-        y: 0
-        width: 64
-        height: 58
-      spriteId: fd7dea5b0c5b50347b0287c6d4f458d8
+        x: 6
+        y: 6
+        width: 3
+        height: 5
+      spriteId: d96fe5a6564799247b5434a65d700a82
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 64, y: 64}
+  canvasSize: {x: 16, y: 16}

@@ -10,15 +10,24 @@ public class LightBreath : MonoBehaviour
     [SerializeField] float meanIntensity;
     [SerializeField] float magnitudeIntensity;
     [SerializeField] float speedIntensity;
+    [SerializeField] float offsetIntensity;
 
     [Header("Radius")]
     [SerializeField] float meanRadius;
     [SerializeField] float magnitudeRadius;
     [SerializeField] float speedRadius;
+    [SerializeField] float offsetRadius;
+
+    Light2D light2D;
 
     private void FixedUpdate()
     {
-        GetComponent<Light2D>().intensity = meanIntensity + Mathf.Sin(speedIntensity * Time.time) * magnitudeIntensity;
-        GetComponent<Light2D>().pointLightOuterRadius = meanRadius + Mathf.Sin(speedRadius * Time.time) * magnitudeRadius;
+        light2D.intensity = meanIntensity + Mathf.Sin(speedIntensity * Time.time - offsetIntensity) * magnitudeIntensity;
+        light2D.pointLightOuterRadius = meanRadius + Mathf.Sin(speedRadius * Time.time - offsetRadius) * magnitudeRadius;
+    }
+
+    private void Awake()
+    {
+        light2D = GetComponent<Light2D>();
     }
 }
