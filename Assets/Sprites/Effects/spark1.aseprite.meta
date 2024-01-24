@@ -141,16 +141,56 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   - name: spark1_Frame_2
     originalName: 
+    pivot: {x: 1.5, y: -4}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 51
+      width: 2
+      height: 2
+    spriteID: 784f95a10e7529140a186b7d984ff518
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 51}
+  - name: spark1_Frame_4
+    originalName: 
     pivot: {x: 0.6, y: -0.375}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 22
+      width: 5
+      height: 8
+    spriteID: d96fe5a6564799247b5434a65d700a82
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 22}
+  - name: spark1_Frame_3
+    originalName: 
+    pivot: {x: 2, y: -9}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 17
       y: 4
-      width: 5
-      height: 8
-    spriteID: 784f95a10e7529140a186b7d984ff518
+      width: 1
+      height: 1
+    spriteID: 1c6bb4e9969bd464eb0193df4f886dc7
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -167,10 +207,10 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 22
+      y: 38
       width: 3
       height: 5
-    spriteID: d96fe5a6564799247b5434a65d700a82
+    spriteID: ae71424c9ca2f6d49b03f64350848f34
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -178,7 +218,27 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 22}
+    uvTransform: {x: 4, y: 38}
+  - name: spark1_Frame_5
+    originalName: 
+    pivot: {x: -1, y: -7}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 17
+      y: 13
+      width: 1
+      height: 1
+    spriteID: a2316d88ff1888d4b805fcc9e92e1f0a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 17, y: 13}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -196,6 +256,14 @@ ScriptedImporter:
         width: 5
         height: 10
       spriteId: e163f68c3bac73a4085b698cbe7bd531
+    - name: spark1_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 5
+        y: 8
+        width: 2
+        height: 2
+      spriteId: 784f95a10e7529140a186b7d984ff518
     - name: spark1_Frame_2
       frameIndex: 2
       cellRect:
@@ -203,7 +271,15 @@ ScriptedImporter:
         y: 3
         width: 5
         height: 8
-      spriteId: 784f95a10e7529140a186b7d984ff518
+      spriteId: d96fe5a6564799247b5434a65d700a82
+    - name: spark1_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 6
+        y: 9
+        width: 1
+        height: 1
+      spriteId: 1c6bb4e9969bd464eb0193df4f886dc7
     - name: spark1_Frame_4
       frameIndex: 4
       cellRect:
@@ -211,7 +287,15 @@ ScriptedImporter:
         y: 6
         width: 3
         height: 5
-      spriteId: d96fe5a6564799247b5434a65d700a82
+      spriteId: ae71424c9ca2f6d49b03f64350848f34
+    - name: spark1_Frame_5
+      frameIndex: 5
+      cellRect:
+        x: 9
+        y: 7
+        width: 1
+        height: 1
+      spriteId: a2316d88ff1888d4b805fcc9e92e1f0a
     linkedCells: []
     parentIndex: -1
   platformSettings: []

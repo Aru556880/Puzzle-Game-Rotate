@@ -17,6 +17,7 @@ public class CharacterBody : MovableActor
         if(!IsPossessed(out _)) 
         {
             base.BePossessed(possessingChar);
+            _spriteRenderer.sprite = PlayerFullBodySprite;
             IsEmpty = false;
         }
     }
@@ -25,6 +26,7 @@ public class CharacterBody : MovableActor
         if(IsPossessed(out CharacterFree possessingChar))
         {
             base.StopPossessing();
+            _spriteRenderer.sprite = PlayerEmptyBodySprite;
             IsEmpty = true;
         }
     }

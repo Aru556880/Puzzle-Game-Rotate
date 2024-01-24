@@ -50,6 +50,7 @@ public class Cage : SquareActor
         {
             possessingChar.transform.SetParent(_bodyInCage.transform);
             possessingChar.gameObject.SetActive(false);
+            _bodyInCage.BePossessed(possessingChar);
             Player.Instance.CurrentControlActor = gameObject;
         }
     }
@@ -60,6 +61,7 @@ public class Cage : SquareActor
             possessingChar.gameObject.SetActive(true);
             possessingChar.transform.SetParent(GameManager.Instance.levelBuilder.AllActors.transform);
             possessingChar.transform.position = transform.position; 
+            _bodyInCage.StopPossessing();
             Player.Instance.CurrentControlActor = possessingChar.gameObject;
         }
     }

@@ -121,15 +121,15 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: PlayerFree
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: -0.5}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 4
-      width: 64
-      height: 58
+      x: 36
+      y: 41
+      width: 24
+      height: 28
     spriteID: 28ac082c0ad71d84eb424ff8b196c46a
     spriteBone: []
     spriteOutline: []
@@ -138,18 +138,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 4}
+    uvTransform: {x: 36, y: 41}
   - name: PlayerFree_Frame_1
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: -0.4482759}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 76
+      x: 4
       y: 4
-      width: 64
-      height: 58
+      width: 24
+      height: 29
     spriteID: 214ecadf531b2cf4baf551e61142f456
     spriteBone: []
     spriteOutline: []
@@ -158,18 +158,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 76, y: 4}
+    uvTransform: {x: 4, y: 4}
   - name: PlayerFree_Frame_2
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: -0.4482759}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 148
-      y: 4
-      width: 64
-      height: 58
+      x: 4
+      y: 41
+      width: 24
+      height: 29
     spriteID: 57909ca1c111b9d48b8c210e863255d9
     spriteBone: []
     spriteOutline: []
@@ -178,18 +178,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 148, y: 4}
+    uvTransform: {x: 4, y: 41}
   - name: PlayerFree_Frame_3
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: -0.46428573}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 148
-      y: 70
-      width: 64
-      height: 57
+      x: 36
+      y: 77
+      width: 24
+      height: 28
     spriteID: e9212633bda017143b308d5238447eec
     spriteBone: []
     spriteOutline: []
@@ -198,18 +198,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 148, y: 70}
+    uvTransform: {x: 36, y: 77}
   - name: PlayerFree_Frame_4
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: -0.4482759}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
-      y: 70
-      width: 64
-      height: 58
+      y: 78
+      width: 24
+      height: 29
     spriteID: ad5e8b0f41955b64c8eb09a5616a0b05
     spriteBone: []
     spriteOutline: []
@@ -218,18 +218,18 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 70}
+    uvTransform: {x: 4, y: 78}
   - name: PlayerFree_Frame_5
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.5, y: -0.4482759}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 76
-      y: 70
-      width: 64
-      height: 58
+      x: 36
+      y: 4
+      width: 24
+      height: 29
     spriteID: fd7dea5b0c5b50347b0287c6d4f458d8
     spriteBone: []
     spriteOutline: []
@@ -238,7 +238,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 76, y: 70}
+    uvTransform: {x: 36, y: 4}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -251,54 +251,54 @@ ScriptedImporter:
     - name: PlayerFree_Frame_0
       frameIndex: 0
       cellRect:
-        x: 0
-        y: 0
-        width: 64
-        height: 58
+        x: 4
+        y: 14
+        width: 24
+        height: 28
       spriteId: 28ac082c0ad71d84eb424ff8b196c46a
     - name: PlayerFree_Frame_1
       frameIndex: 1
       cellRect:
-        x: 0
-        y: 0
-        width: 64
-        height: 58
+        x: 4
+        y: 13
+        width: 24
+        height: 29
       spriteId: 214ecadf531b2cf4baf551e61142f456
     - name: PlayerFree_Frame_2
       frameIndex: 2
       cellRect:
-        x: 0
-        y: 0
-        width: 64
-        height: 58
+        x: 4
+        y: 13
+        width: 24
+        height: 29
       spriteId: 57909ca1c111b9d48b8c210e863255d9
     - name: PlayerFree_Frame_3
       frameIndex: 3
       cellRect:
-        x: 0
-        y: 0
-        width: 64
-        height: 57
+        x: 4
+        y: 13
+        width: 24
+        height: 28
       spriteId: e9212633bda017143b308d5238447eec
     - name: PlayerFree_Frame_4
       frameIndex: 4
       cellRect:
-        x: 0
-        y: 0
-        width: 64
-        height: 58
+        x: 4
+        y: 13
+        width: 24
+        height: 29
       spriteId: ad5e8b0f41955b64c8eb09a5616a0b05
     - name: PlayerFree_Frame_5
       frameIndex: 5
       cellRect:
-        x: 0
-        y: 0
-        width: 64
-        height: 58
+        x: 4
+        y: 13
+        width: 24
+        height: 29
       spriteId: fd7dea5b0c5b50347b0287c6d4f458d8
     linkedCells: []
     parentIndex: -1
   platformSettings: []
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 64, y: 64}
+  canvasSize: {x: 32, y: 48}
