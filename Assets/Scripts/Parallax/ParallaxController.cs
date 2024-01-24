@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ParallaxController : MonoBehaviour
 {
-    [SerializeField] Camera camera;
+    [SerializeField] Camera _camera;
     [SerializeField] List<ParallaxLayer> layers;
 
     Vector3 originalPosition;
@@ -12,13 +12,13 @@ public class ParallaxController : MonoBehaviour
 
     private void Start()
     {
-        originalPosition = camera.transform.position;
+        originalPosition = _camera.transform.position;
     }
 
     private void FixedUpdate()
     {
         // get camera offset
-        offset = camera.transform.position - originalPosition;
+        offset = _camera.transform.position - originalPosition;
         offset.z = 0;
 
         // move each layer reletive to offset

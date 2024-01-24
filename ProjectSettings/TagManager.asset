@@ -44,7 +44,7 @@ TagManager:
   - name: Background
     uniqueID: 1228670213
     locked: 0
-  - name: Tilemap
+  - name: Foreground
     uniqueID: 4080001935
     locked: 0
   - name: CharacterBody

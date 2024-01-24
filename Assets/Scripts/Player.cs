@@ -3,16 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Cinemachine;
 
 public class Player : MonoBehaviour
 {
     static public Player Instance;
     public Vector2Int HeadDirection;
-    public GameObject CurrentControlActor;
+    public GameObject CurrentControlActor
+    {
+        get {return _currentControlActor;}
+        set 
+        {
+            _currentControlActor = value;
+            _cinemachine.Follow = value.transform;
+        }
+    }
     public bool CanPlayerControl;
     
+    [SerializeField] GameObject _currentControlActor;
     SpriteRenderer _spriteRenderer;
-    [SerializeField] Camera mainCamera;
+    [SerializeField] Camera _mainCamera;
+    [SerializeField] CinemachineVirtualCamera _cinemachine;
     void Awake() 
     {
         if(Instance!=null)
@@ -35,10 +46,10 @@ public class Player : MonoBehaviour
     private void Update()
     {
         /* TODO: implement this with cinemachine instead: too much shaking to the screen */
-        Vector3 temp;
+        /*Vector3 temp;
         temp = CurrentControlActor.transform.position;
         temp.z = mainCamera.transform.position.z;
-        mainCamera.transform.position = temp;
+        mainCamera.transform.position = temp;*/
     }
 
     #region PLAYER_RELATED
