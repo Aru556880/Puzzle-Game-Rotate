@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 103319637}
   - component: {fileID: 103319638}
+  - component: {fileID: 103319639}
   m_Layer: 0
   m_Name: TankLight2
   m_TagString: Untagged
@@ -205,6 +206,26 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &103319639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103319636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fb5618b95adc8d4796467db00d284a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meanIntensity: 1
+  magnitudeIntensity: 0.3
+  speedIntensity: 1
+  offsetIntensity: 90
+  meanRadius: 7.5
+  magnitudeRadius: 1.5
+  speedRadius: 1
+  offsetRadius: 90
 --- !u!1 &412375537
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,12 +462,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fb5618b95adc8d4796467db00d284a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meanIntensity: 3
-  magnitudeIntensity: 1
+  meanIntensity: 2
+  magnitudeIntensity: 0.7
   speedIntensity: 2
+  offsetIntensity: 30
   meanRadius: 3.5
-  magnitudeRadius: 0.5
+  magnitudeRadius: 1
   speedRadius: 2
+  offsetRadius: 0
 --- !u!1 &491838083
 GameObject:
   m_ObjectHideFlags: 0
@@ -7159,8 +7182,8 @@ Tilemap:
   - first: {x: -9, y: 2, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 4
+      m_TileIndex: 10
+      m_TileSpriteIndex: 14
       m_TileMatrixIndex: 0
       m_TileColorIndex: 9
       m_TileObjectToInstantiateIndex: 65535
@@ -7679,8 +7702,8 @@ Tilemap:
   - first: {x: -9, y: 3, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 4
+      m_TileIndex: 10
+      m_TileSpriteIndex: 14
       m_TileMatrixIndex: 0
       m_TileColorIndex: 9
       m_TileObjectToInstantiateIndex: 65535
@@ -13150,7 +13173,7 @@ Tilemap:
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
-  - m_RefCount: 135
+  - m_RefCount: 133
     m_Data: {fileID: 11400000, guid: dd0a6ba7655651c4b868134305504140, type: 2}
   - m_RefCount: 0
     m_Data: {fileID: 0}
@@ -13170,7 +13193,7 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 6
     m_Data: {fileID: 11400000, guid: 2d6f4c01c930f164a884c6fe56c0b761, type: 2}
-  - m_RefCount: 126
+  - m_RefCount: 128
     m_Data: {fileID: 11400000, guid: cef3c9f0e55d0714b978a4d0fa647439, type: 2}
   - m_RefCount: 0
     m_Data: {fileID: 0}
@@ -13217,7 +13240,7 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 135
+  - m_RefCount: 133
     m_Data: {fileID: 1964008619, guid: a58725fd6a95a6e4fb18e9828828bbbc, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
@@ -13237,7 +13260,7 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 6
     m_Data: {fileID: -1549930682, guid: a58725fd6a95a6e4fb18e9828828bbbc, type: 3}
-  - m_RefCount: 126
+  - m_RefCount: 128
     m_Data: {fileID: -864380410, guid: a58725fd6a95a6e4fb18e9828828bbbc, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
@@ -13355,6 +13378,7 @@ GameObject:
   m_Component:
   - component: {fileID: 531365391}
   - component: {fileID: 531365392}
+  - component: {fileID: 531365393}
   m_Layer: 0
   m_Name: TankLight3
   m_TagString: Untagged
@@ -13427,6 +13451,26 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &531365393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531365390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fb5618b95adc8d4796467db00d284a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meanIntensity: 1
+  magnitudeIntensity: 0.3
+  speedIntensity: 1
+  offsetIntensity: 135
+  meanRadius: 7.5
+  magnitudeRadius: 1.5
+  speedRadius: 1
+  offsetRadius: 90
 --- !u!1 &679912334
 GameObject:
   m_ObjectHideFlags: 0
@@ -13615,6 +13659,8 @@ GameObject:
   m_Component:
   - component: {fileID: 747058972}
   - component: {fileID: 747058973}
+  - component: {fileID: 747058975}
+  - component: {fileID: 747058974}
   m_Layer: 0
   m_Name: ScreenLight1
   m_TagString: Untagged
@@ -13687,6 +13733,42 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &747058974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747058971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fb5618b95adc8d4796467db00d284a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meanIntensity: 4
+  magnitudeIntensity: 0.2
+  speedIntensity: 3
+  offsetIntensity: 80
+  meanRadius: 2
+  magnitudeRadius: 0.3
+  speedRadius: 3
+  offsetRadius: 120
+--- !u!114 &747058975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747058971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34f853b6f00c444a860f738c7812d7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalIntensity: 4
+  flickerStrength: 0.2
+  flickerFrequency: 0.005
+  flickerLength: 0.05
 --- !u!1 &854805257
 GameObject:
   m_ObjectHideFlags: 0
@@ -13697,6 +13779,7 @@ GameObject:
   m_Component:
   - component: {fileID: 854805258}
   - component: {fileID: 854805259}
+  - component: {fileID: 854805260}
   m_Layer: 0
   m_Name: ArrowLight2
   m_TagString: Untagged
@@ -13769,6 +13852,22 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &854805260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 854805257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34f853b6f00c444a860f738c7812d7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalIntensity: 2
+  flickerStrength: 1
+  flickerFrequency: 0.8
+  flickerLength: 0.1
 --- !u!1 &932738985
 GameObject:
   m_ObjectHideFlags: 0
@@ -13779,6 +13878,8 @@ GameObject:
   m_Component:
   - component: {fileID: 932738986}
   - component: {fileID: 932738987}
+  - component: {fileID: 932738988}
+  - component: {fileID: 932738989}
   m_Layer: 0
   m_Name: ArrowLight1
   m_TagString: Untagged
@@ -13851,6 +13952,42 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &932738988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932738985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34f853b6f00c444a860f738c7812d7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalIntensity: 2
+  flickerStrength: 0.5
+  flickerFrequency: 0.005
+  flickerLength: 0.05
+--- !u!114 &932738989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 932738985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fb5618b95adc8d4796467db00d284a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meanIntensity: 2
+  magnitudeIntensity: 1
+  speedIntensity: 1
+  offsetIntensity: 0
+  meanRadius: 2
+  magnitudeRadius: 0
+  speedRadius: 1
+  offsetRadius: 0
 --- !u!43 &933552993
 Mesh:
   m_ObjectHideFlags: 0
@@ -14190,6 +14327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1057643919}
   - component: {fileID: 1057643920}
+  - component: {fileID: 1057643921}
   m_Layer: 0
   m_Name: TankLight1
   m_TagString: Untagged
@@ -14262,6 +14400,26 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &1057643921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057643918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fb5618b95adc8d4796467db00d284a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meanIntensity: 4
+  magnitudeIntensity: 1
+  speedIntensity: 1
+  offsetIntensity: 0
+  meanRadius: 6
+  magnitudeRadius: 2
+  speedRadius: 1
+  offsetRadius: 0
 --- !u!1 &1285782889
 GameObject:
   m_ObjectHideFlags: 0
@@ -14273,6 +14431,7 @@ GameObject:
   - component: {fileID: 1285782890}
   - component: {fileID: 1285782892}
   - component: {fileID: 1285782891}
+  - component: {fileID: 1285782893}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -14330,7 +14489,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14351,7 +14510,7 @@ SpriteRenderer:
   m_SortingLayerID: -1995257495
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1511997367, guid: f05ee6b00ff299c48a8de4dd1afe3e63, type: 3}
+  m_Sprite: {fileID: 649926212, guid: abc082f54c30d1d47adfa1ba7765e9b8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -14362,6 +14521,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1285782893
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285782889}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d5568a235b014514cbd2bf846d3ac806, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1318573429
 GameObject:
   m_ObjectHideFlags: 0
@@ -15318,7 +15498,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -16082,7 +16262,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 2
       minScalar: 10
       maxCurve:
         serializedVersion: 2
