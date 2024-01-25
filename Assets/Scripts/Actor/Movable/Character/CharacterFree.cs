@@ -51,6 +51,8 @@ public class CharacterFree : MovableActor
         direction.Normalize();
         List<Coroutine> activedCoroutine = new ();
 
+        if(direction.x!=0) transform.localScale = new Vector2(direction.x,1);
+
         if(!CanMoveWhenControlled(direction, Vector2.zero))
         {
             yield break;
