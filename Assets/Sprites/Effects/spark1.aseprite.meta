@@ -201,14 +201,14 @@ ScriptedImporter:
     uvTransform: {x: 17, y: 4}
   - name: spark1_Frame_4
     originalName: 
-    pivot: {x: 0.6666667, y: -1.2}
+    pivot: {x: 0.75, y: -1.2}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
       x: 4
       y: 38
-      width: 3
+      width: 4
       height: 5
     spriteID: ae71424c9ca2f6d49b03f64350848f34
     spriteBone: []
@@ -283,9 +283,9 @@ ScriptedImporter:
     - name: spark1_Frame_4
       frameIndex: 4
       cellRect:
-        x: 6
+        x: 5
         y: 6
-        width: 3
+        width: 4
         height: 5
       spriteId: ae71424c9ca2f6d49b03f64350848f34
     - name: spark1_Frame_5
