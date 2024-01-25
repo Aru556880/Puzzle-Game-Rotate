@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class CharacterFree : MovableActor
 {
+     void OnEnable() 
+    {
+        transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
+    }
     public void TryPossess()
     {
         MovableActor possessedActor = FindPossessTarget();
@@ -66,6 +70,10 @@ public class CharacterFree : MovableActor
     #region OVERRIDE
     public override bool CanBePossessed => false;
     public override bool IsBlocked(Vector2 movingDir) { return false; } //Free character is incorporeal
+    protected override bool WillFallDown()
+    {
+        return false;
+    }
     protected override bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos)
     {
         Vector2 currentPos = transform.position;

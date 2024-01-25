@@ -23,17 +23,21 @@ public class Actor : MonoBehaviour //Any Object on the tile map
     {
         if(IsWall(position)) return true;
         
-        foreach(Transform actor in _actors)
+        foreach(Transform actorTransform in _actors)
         {
-            Vector2 actorGridPos = GetGridPos(actor.transform.position);
+            Vector2 actorGridPos = GetGridPos(actorTransform.transform.position);
             Vector2 targetGridPos = GetGridPos(position);
 
-            if(targetGridPos != actorGridPos || !actor.gameObject.activeSelf) continue;
-            if(actor.TryGetComponent(out MovableActor _))
+            if(targetGridPos != actorGridPos || !actorTransform.gameObject.activeSelf) continue;
+            if(actorTransform.TryGetComponent(out MovableActor _))
             {
-                if(actor.TryGetComponent(out CharacterFree _)) continue;
+                if(actorTransform.TryGetComponent(out CharacterFree _)) continue;
                 
                 return true;
+            }
+            else if(actorTransform.TryGetComponent(out Actor _))
+            {
+                if(actorTransform.TryGetComponent(out KeyDoor keyDoor) && keyDoor.HasKey) return true;
             }
 
         }

@@ -52,6 +52,13 @@ public class SquareActor : MovableActor
     }
     #endregion
 
+    #region VIRTUAL_METHODS_ROTATE
+    public virtual void BeginRotateAction(Vector2 movingDir) {} //Do something when rotation starts
+    public virtual void PerformRotatingAction(Vector2 movingDir) { }  //Do something when rotationing
+
+    public virtual void EndRotateAction(Vector2 movingDir) {} //Do something when rotation ends
+    #endregion
+
     #region OVERRIDE
     protected override bool WillFallDown() //It also check that it can stay on the walls or not
     {
@@ -186,6 +193,8 @@ public class SquareActor : MovableActor
     #region COROUTINES
     IEnumerator RotateAnimation(Vector2 movingDir, Vector2 rotatePivot, float rotateAngle)
     {
+        BeginRotateAction(movingDir);
+
         Vector3 prevRotate = transform.rotation.eulerAngles;
         float progress = 0;
         float duration = 0.25f;
@@ -201,12 +210,15 @@ public class SquareActor : MovableActor
 
             progress += Time.deltaTime;
             transform.RotateAround(rotatePivot, new Vector3(0,0,1) , rotateEplison);
+
+            PerformRotatingAction(movingDir);
             yield return null;
         }
 
         transform.rotation = Quaternion.Euler(prevRotate + new Vector3(0,0,rotateAngle));
         Centralize();
-        
+        EndRotateAction(movingDir);
+
         yield return null;
     }
     #endregion

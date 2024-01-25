@@ -20,7 +20,17 @@ public class Cage : SquareActor
             return null;
         }
     }
-    #region OVERRIDE
+
+    void Start() 
+    {
+        IsLocked = true;
+    }
+    public void UnLock()
+    {
+        IsLocked = false;
+    }
+
+    #region OVERRIDE_POSSESS_RELATED
     //Possess the cage is actually possess the characterBody inside it, need to override something
     public override bool IsPossessed(out CharacterFree possessingChar) //It is possessed if the body inside it is possessed
     {
@@ -48,8 +58,6 @@ public class Cage : SquareActor
     {
         if(!IsPossessed(out _))
         {
-            possessingChar.transform.SetParent(_bodyInCage.transform);
-            possessingChar.gameObject.SetActive(false);
             _bodyInCage.BePossessed(possessingChar);
             Player.Instance.CurrentControlActor = gameObject;
         }
@@ -58,18 +66,12 @@ public class Cage : SquareActor
     {   
         if(IsPossessed(out CharacterFree possessingChar))
         {
-            possessingChar.gameObject.SetActive(true);
-            possessingChar.transform.SetParent(GameManager.Instance.levelBuilder.AllActors.transform);
-            possessingChar.transform.position = transform.position; 
             _bodyInCage.StopPossessing();
+            possessingChar.transform.position = transform.position; 
             Player.Instance.CurrentControlActor = possessingChar.gameObject;
         }
     }
     #endregion
-    void Start() 
-    {
-        IsLocked = true;
-    }
     protected override void TriggerInteractableActors()
     {
         base.TriggerInteractableActors();
@@ -82,8 +84,8 @@ public class Cage : SquareActor
                 interactableActor.Interact(this, lockDir);
         }
     }
-    public void UnLock()
+    public override void PerformRotatingAction(Vector2 movingDir) //Keep the character body facing in correct direction
     {
-        IsLocked = false;
+        _bodyInCage.transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 //Currently MovableActor is assumed to be the only thing that can be possessed,
 //If there are others thing can also be possessed, we need to use Interface instead
-public abstract class MovableActor : Actor //Objects on the tilemap that can move (be pushed/rotate/fall down aand so on)
+public abstract class MovableActor : Actor //Objects on the tilemap that can move (be pushed/fall down aand so on)
 {
     protected bool _isFalling = false;
 
