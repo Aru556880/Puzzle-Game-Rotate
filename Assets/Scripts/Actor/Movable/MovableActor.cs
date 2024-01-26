@@ -52,7 +52,7 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
         if(IsPossessed(out CharacterFree possessingChar))
         {
             possessingChar.gameObject.SetActive(true);
-            possessingChar.transform.SetParent(GameManager.Instance.levelBuilder.AllActors.transform);
+            possessingChar.transform.SetParent(_actorsTransform);
             possessingChar.transform.position = transform.position;  //The free character is spawned at this block
             Player.Instance.CurrentControlActor = possessingChar.gameObject;
         }
@@ -243,7 +243,7 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
     protected List<GameObject> GetWillFallDownActors()
     {
         List<GameObject> actorList = new ();
-        foreach(Transform child in _actors)
+        foreach(Transform child in _actorsTransform)
         {
             if(child.TryGetComponent(out MovableActor actor) && actor.WillFallDown())
             {

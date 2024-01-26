@@ -8,7 +8,6 @@ using Cinemachine;
 public class Player : MonoBehaviour
 {
     static public Player Instance;
-    public Vector2Int HeadDirection;
     public GameObject CurrentControlActor
     {
         get {return _currentControlActor;}
@@ -21,9 +20,9 @@ public class Player : MonoBehaviour
     public bool CanPlayerControl;
     
     [SerializeField] GameObject _currentControlActor;
-    SpriteRenderer _spriteRenderer;
     [SerializeField] Camera _mainCamera;
     [SerializeField] CinemachineVirtualCamera _cinemachine;
+    SpriteRenderer _spriteRenderer;
     void Awake() 
     {
         if(Instance!=null)
@@ -39,8 +38,8 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
-        HeadDirection = new Vector2Int(1,0);
         CanPlayerControl = true;
+        _cinemachine.Follow = CurrentControlActor.transform;
     }
 
     private void Update()
@@ -95,10 +94,6 @@ public class Player : MonoBehaviour
         if(CurrentControlActor.TryGetComponent(out MovableActor movableActor))
         {
             yield return StartCoroutine(movableActor.MovedByPlayerCoroutine(direction));
-        }
-        else if(CurrentControlActor.TryGetComponent(out CharacterFree characterFree))
-        {
-            print("TODO: Free Character Moving");
         }
 
         CanPlayerControl = true;

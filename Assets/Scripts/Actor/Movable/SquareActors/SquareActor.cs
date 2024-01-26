@@ -55,7 +55,6 @@ public class SquareActor : MovableActor
     #region VIRTUAL_METHODS_ROTATE
     public virtual void BeginRotateAction(Vector2 movingDir) {} //Do something when rotation starts
     public virtual void PerformRotatingAction(Vector2 movingDir) { }  //Do something when rotationing
-
     public virtual void EndRotateAction(Vector2 movingDir) {} //Do something when rotation ends
     #endregion
 
@@ -198,6 +197,7 @@ public class SquareActor : MovableActor
         Vector3 prevRotate = transform.rotation.eulerAngles;
         float progress = 0;
         float duration = 0.25f;
+        duration = duration * (Mathf.Abs(rotateAngle) / 90f);
 
         while(progress < duration)
         {

@@ -10,6 +10,7 @@ public class Cage : SquareActor
     {
         get
         {
+            if(!IsLocked) return null;
             foreach(Transform child in transform)
             {
                 if(child.TryGetComponent(out CharacterBody charBody))
@@ -17,6 +18,7 @@ public class Cage : SquareActor
                     return charBody;
                 }
             }
+
             return null;
         }
     }
@@ -27,6 +29,12 @@ public class Cage : SquareActor
     }
     public void UnLock()
     {
+        if(_bodyInCage!=null)
+        {
+            Player.Instance.CurrentControlActor = _bodyInCage.gameObject;
+            _bodyInCage.transform.SetParent(_actorsTransform);
+        }
+
         IsLocked = false;
     }
 
@@ -47,8 +55,6 @@ public class Cage : SquareActor
     {
         get
         {
-            if(!IsLocked) return false;
-
             if(_bodyInCage!=null && _bodyInCage.CanBePossessed) return true;
 
             return false;
@@ -56,7 +62,7 @@ public class Cage : SquareActor
     }
     public override void BePossessed(CharacterFree possessingChar)
     {
-        if(!IsPossessed(out _))
+        if(_bodyInCage!=null && !IsPossessed(out _))
         {
             _bodyInCage.BePossessed(possessingChar);
             Player.Instance.CurrentControlActor = gameObject;
@@ -72,8 +78,15 @@ public class Cage : SquareActor
         }
     }
     #endregion
+    public override IEnumerator MovedByPlayerCoroutine(Vector2 direction)
+    {
+        if(_bodyInCage==null) yield break;
+        yield return StartCoroutine(base.MovedByPlayerCoroutine(direction));
+    }
     protected override void TriggerInteractableActors()
     {
+        if(_bodyInCage==null) return;
+
         base.TriggerInteractableActors();
 
         Vector2 lockDir = Util.GetVecDirFromCardinalDir(LockDirection);
@@ -86,6 +99,7 @@ public class Cage : SquareActor
     }
     public override void PerformRotatingAction(Vector2 movingDir) //Keep the character body facing in correct direction
     {
+        if(_bodyInCage==null) return;
         _bodyInCage.transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
     }
 }

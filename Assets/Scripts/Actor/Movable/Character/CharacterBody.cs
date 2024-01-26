@@ -46,6 +46,7 @@ public class CharacterBody : MovableActor
         }
 
         direction.Normalize();
+        Vector2 nextPos = Util.GetCertainPosition(transform.position, direction);
         List<Coroutine> activedCoroutine = new ();
 
         if(!CanMoveWhenControlled(direction, Vector2.zero))
@@ -53,6 +54,8 @@ public class CharacterBody : MovableActor
             yield break;
         }
         
+        activedCoroutine = Util.MergeList(activedCoroutine, PushActorsCoroutines(nextPos, direction));
+
         yield return StartCoroutine(TranslatingAnimation(direction));
 
         //TriggerInteractableActors();

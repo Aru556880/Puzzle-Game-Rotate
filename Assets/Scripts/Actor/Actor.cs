@@ -5,7 +5,7 @@ using UnityEngine;
 public class Actor : MonoBehaviour //Any Object on the tile map
 {
     protected float _gridSize { get { return GameManager.Instance.levelBuilder.GridSize;} }
-    protected Transform _actors { get { return transform==null ? transform : transform.parent; } }
+    protected Transform _actorsTransform { get { return GameManager.Instance.levelBuilder.AllActors.transform; } }
     protected void Centralize()
     {
         Vector2Int gridPos = GameManager.Instance.levelBuilder.GetGridFromWorld(transform.position);
@@ -23,7 +23,7 @@ public class Actor : MonoBehaviour //Any Object on the tile map
     {
         if(IsWall(position)) return true;
         
-        foreach(Transform actorTransform in _actors)
+        foreach(Transform actorTransform in _actorsTransform)
         {
             Vector2 actorGridPos = GetGridPos(actorTransform.transform.position);
             Vector2 targetGridPos = GetGridPos(position);
@@ -48,7 +48,7 @@ public class Actor : MonoBehaviour //Any Object on the tile map
     {
         List<GameObject> actorsList = new ();
 
-        foreach(Transform child in _actors)
+        foreach(Transform child in _actorsTransform)
         {
             Vector2Int actorGridPos = GetGridPos(child.position);
             Vector2Int targetGridPos = GetGridPos(position);

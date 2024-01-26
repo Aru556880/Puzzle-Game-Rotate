@@ -4,10 +4,20 @@ using UnityEngine;
 
 public class CharacterFree : MovableActor
 {
-     void OnEnable() 
+    [SerializeField] GameObject _possessHint;
+    void OnEnable() 
     {
         transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
+        _possessHint.transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
+        _possessHint.SetActive(true);
+        _possessHint.transform.position = transform.position;  
     }
+    void OnDisable() 
+    {
+        _possessHint.SetActive(false);
+    }
+
+    #region POSSESS_RELATED
     public void TryPossess()
     {
         MovableActor possessedActor = FindPossessTarget();
@@ -29,10 +39,16 @@ public class CharacterFree : MovableActor
 
         return null;
     }
-    void ShowPossessTargetHint(Vector2 position)
+    void ShowPossessTargetHint()
     {
-
+        if(FindPossessTarget()!=null)
+        {
+            _possessHint.SetActive(true);
+            _possessHint.transform.position = transform.position;  
+        }
+        else _possessHint.SetActive(false);
     }
+    #endregion
 
     #region IMPLEMENT_ABSTRACT_METHODS
     public override IEnumerator MovedByPlayerCoroutine(Vector2 direction)
@@ -66,6 +82,7 @@ public class CharacterFree : MovableActor
 
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine)); //Wait for other coroutines finished
 
+        ShowPossessTargetHint();
     }
     #endregion
 
