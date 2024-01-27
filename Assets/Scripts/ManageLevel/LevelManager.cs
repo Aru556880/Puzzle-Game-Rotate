@@ -29,6 +29,8 @@ public class LevelManager : MonoBehaviour
     }
     IEnumerator RevealSceneCoroutine(AsyncOperation asyncOperation)
     {
+        levelManagerCanvas.gameObject.SetActive(true);
+        maskImage.rectTransform.sizeDelta = Vector2.zero;
         while(!asyncOperation.isDone) yield return null;
 
         Player player = FindAnyObjectByType<Player>();
@@ -37,8 +39,8 @@ public class LevelManager : MonoBehaviour
         float progress = 0;
         while(progress < 1)
         {
-            maskImage.rectTransform.sizeDelta = new Vector2(2000,2000) * progress;
-            progress += Time.deltaTime * 2;
+            maskImage.rectTransform.sizeDelta = new Vector2(5000,5000) * progress;
+            progress += Time.deltaTime * 1.5f;
             yield return null;
         }
     }
