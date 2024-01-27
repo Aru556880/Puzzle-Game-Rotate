@@ -298,6 +298,7 @@ MonoBehaviour:
   magnitudeRadius: 1.5
   speedRadius: 1
   offsetRadius: 90
+--- !u!43 &310834501
 --- !u!1 &412375537
 GameObject:
   m_ObjectHideFlags: 0
@@ -13602,7 +13603,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &679912334
@@ -14872,8 +14873,8 @@ MonoBehaviour:
   - {x: 14, y: 10, z: 0}
   - {x: 14, y: -13, z: 0}
   m_ShapePathHash: 0
-  m_Mesh: {fileID: 1736905454}
-  m_InstanceId: 32166
+  m_Mesh: {fileID: 310834501}
+  m_InstanceId: 31308
   m_LocalBounds:
     m_Center: {x: -2, y: -1.5, z: 0}
     m_Extent: {x: 16, y: 11.5, z: 0}
@@ -20981,6 +20982,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6250103720635676953, guid: 5c84665f44fd83c499313f2bb7514cf7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6680325476501574426, guid: 5c84665f44fd83c499313f2bb7514cf7, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
