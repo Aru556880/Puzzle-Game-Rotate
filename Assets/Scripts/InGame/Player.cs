@@ -8,6 +8,7 @@ using Cinemachine;
 public class Player : MonoBehaviour
 {
     static public Player Instance;
+    public Action OnPlayMovingControlEnd;
     public GameObject CurrentControlActor
     {
         get {return _currentControlActor;}
@@ -97,6 +98,7 @@ public class Player : MonoBehaviour
         }
 
         CanPlayerControl = true;
+        OnPlayMovingControlEnd?.Invoke();
     }
 
     #endregion 

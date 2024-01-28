@@ -7,24 +7,24 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
-    static public LevelManager levelManager;
+    static public LevelManager Instance;
     [SerializeField] Canvas levelManagerCanvas;
     [SerializeField] Image maskImage;
     private void Awake() 
     {
-        if(levelManager!=null)
+        if(Instance!=null)
         {
             Destroy(gameObject);
         }
         else
         {
-            levelManager = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
     }
     public void EnterLevelTest()
     {
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Level1-1");
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Level1-2");
         StartCoroutine(RevealSceneCoroutine(asyncOperation));
     }
     IEnumerator RevealSceneCoroutine(AsyncOperation asyncOperation)

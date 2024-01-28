@@ -43,7 +43,7 @@ public class SquareActor : MovableActor
             yield return StartCoroutine(TranslatingAnimation(direction));
         }
 
-        TriggerInteractableActors();
+        TriggerInteractableActors(direction);
 
         activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
 

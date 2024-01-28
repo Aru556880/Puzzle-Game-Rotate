@@ -109,13 +109,13 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
     #endregion 
 
     #region VIRTUAL_METHOD_INTERACT_RELATED
-    protected virtual void TriggerInteractableActors()
+    protected virtual void TriggerInteractableActors(Vector2 movingDir)
     {
         List<GameObject> occupyingActors = GetActorsAtPos(transform.position);
         foreach(GameObject occupyingActor in occupyingActors)
         {
             if(occupyingActor.TryGetComponent(out IInteractableActor interactableActor))
-                interactableActor.Interact(this, Vector2.zero);
+                interactableActor.Interact(this, Vector2.zero, movingDir);
         }
     }
     #endregion
@@ -196,7 +196,7 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
             }
         }
 
-        TriggerInteractableActors();
+        TriggerInteractableActors(new Vector2(0,-1));
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
         _isFalling = false;
     }
@@ -229,7 +229,7 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
 
         yield return StartCoroutine(TranslatingAnimation(movingDir));
 
-        TriggerInteractableActors();
+        TriggerInteractableActors(movingDir);
 
         activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
 

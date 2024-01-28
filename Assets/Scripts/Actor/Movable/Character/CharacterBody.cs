@@ -35,7 +35,6 @@ public class CharacterBody : MovableActor
     public override IEnumerator MovedByPlayerCoroutine(Vector2 direction)
     {
         //When player control this block and input WASD, this coroutine will be called
-
         if(Mathf.Abs(direction.x) < 0.5f)
         {
             direction.x = 0;
@@ -58,7 +57,7 @@ public class CharacterBody : MovableActor
 
         yield return StartCoroutine(TranslatingAnimation(direction));
 
-        //TriggerInteractableActors();
+        TriggerInteractableActors(direction);
 
         activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
 

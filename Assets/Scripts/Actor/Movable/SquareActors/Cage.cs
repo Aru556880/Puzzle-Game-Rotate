@@ -83,18 +83,18 @@ public class Cage : SquareActor
         if(_bodyInCage==null) yield break;
         yield return StartCoroutine(base.MovedByPlayerCoroutine(direction));
     }
-    protected override void TriggerInteractableActors()
+    protected override void TriggerInteractableActors(Vector2 movingDir)
     {
         if(_bodyInCage==null) return;
 
-        base.TriggerInteractableActors();
+        base.TriggerInteractableActors(movingDir);
 
         Vector2 lockDir = Util.GetVecDirFromCardinalDir(LockDirection);
         List<GameObject> occupyingActors = GetActorsAtPos((Vector2)transform.position + lockDir);
         foreach(GameObject occupyingActor in occupyingActors)
         {
             if(occupyingActor.TryGetComponent(out IInteractableActor interactableActor))
-                interactableActor.Interact(this, lockDir);
+                interactableActor.Interact(this, lockDir, movingDir);
         }
     }
     public override void PerformRotatingAction(Vector2 movingDir) //Keep the character body facing in correct direction
