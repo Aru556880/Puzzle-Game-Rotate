@@ -22,8 +22,6 @@ public class EndPoint : Actor, IInteractableActor
     {
         yield return new WaitForSeconds(0.5f);
         yield return StartCoroutine(characterBody.MovedByPlayerCoroutine(direction));
-        yield return new WaitForSeconds(1f);
-
         LevelManager.Instance.EnterLevelTest();
     }
 

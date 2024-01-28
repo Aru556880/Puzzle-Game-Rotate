@@ -22,19 +22,44 @@ public class LevelManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
+    void Start() 
+    {
+        maskImage.gameObject.SetActive(false);
+    }
     public void EnterLevelTest()
     {
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Level1-2");
-        StartCoroutine(RevealSceneCoroutine(asyncOperation));
+        StartCoroutine(LoadSceneCoroutine("Level1-2"));
+    }
+    IEnumerator LoadSceneCoroutine(string sceneName)
+    {
+        yield return StartCoroutine(HideSceneCoroutine());
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+        yield return StartCoroutine(RevealSceneCoroutine(asyncOperation));
+    }
+    IEnumerator HideSceneCoroutine()
+    {
+        maskImage.gameObject.gameObject.SetActive(true);
+        maskImage.rectTransform.sizeDelta = Vector2.zero;
+
+        float progress = 0;
+        while(progress < 1)
+        {
+            maskImage.rectTransform.sizeDelta = new Vector2(5000,5000) * (1-progress);
+            progress += Time.deltaTime * 1.5f;
+
+            if(progress>1) maskImage.rectTransform.sizeDelta = Vector2.zero;
+            yield return null;
+        }
     }
     IEnumerator RevealSceneCoroutine(AsyncOperation asyncOperation)
     {
-        levelManagerCanvas.gameObject.SetActive(true);
+        maskImage.gameObject.gameObject.SetActive(true);
         maskImage.rectTransform.sizeDelta = Vector2.zero;
+
+        yield return new WaitForSeconds(1f);
         while(!asyncOperation.isDone) yield return null;
 
         Player player = FindAnyObjectByType<Player>();
-        levelManagerCanvas.gameObject.SetActive(true);
         
         float progress = 0;
         while(progress < 1)
@@ -43,5 +68,6 @@ public class LevelManager : MonoBehaviour
             progress += Time.deltaTime * 1.5f;
             yield return null;
         }
+        maskImage.gameObject.gameObject.SetActive(false);
     }
 }
