@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e087ee8c49bb545a17ac3bc926dbbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movingSpeed: 1
   IsEmpty: 0
   PlayerFullBodySprite: {fileID: 1511997367, guid: f05ee6b00ff299c48a8de4dd1afe3e63, type: 3}
   PlayerEmptyBodySprite: {fileID: -834648190, guid: ab3eb739625b7a14abb1b5e714d496dc, type: 3}
@@ -5163,6 +5164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17a6d80e0a1dbeb4bba0aefb17b30d8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movingSpeed: 1.5
   _possessHint: {fileID: 30542661406159081}
 --- !u!1 &6860854775097543695
 GameObject:

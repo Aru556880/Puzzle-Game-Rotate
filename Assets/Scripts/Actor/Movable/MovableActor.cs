@@ -8,6 +8,7 @@ using UnityEngine.Tilemaps;
 public abstract class MovableActor : Actor //Objects on the tilemap that can move (be pushed/fall down aand so on)
 {
     protected bool _isFalling = false;
+    [SerializeField] float movingSpeed = 1;
 
     #region OVERRIDE
     public override bool IsBlocked(Vector2 movingDir)
@@ -210,7 +211,7 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
 
         while(progress < duration)
         {
-            progress = Mathf.Min(duration, progress + Time.deltaTime);
+            progress = Mathf.Min(duration, progress + Time.deltaTime * movingSpeed);
             transform.position = Vector2.Lerp(origPos, nextPos, progress/duration);
             yield return null;
         }
