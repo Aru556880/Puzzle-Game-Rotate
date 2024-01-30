@@ -110,13 +110,22 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
     #endregion 
 
     #region VIRTUAL_METHOD_INTERACT_RELATED
-    protected virtual void TriggerInteractableActors(Vector2 movingDir)
+    protected virtual void InteractaWithActors(Vector2 movingDir)
     {
-        List<GameObject> occupyingActors = GetActorsAtPos(transform.position);
-        foreach(GameObject occupyingActor in occupyingActors)
+        List<GameObject> actorListAtCurrentPos = GetActorsAtPos(transform.position);
+        foreach(GameObject occupyingActor in actorListAtCurrentPos)
         {
+            //Interact with the actor at same position
             if(occupyingActor.TryGetComponent(out IInteractableActor interactableActor))
-                interactableActor.Interact(this, Vector2.zero, movingDir);
+                interactableActor.Interact(this, IInteractableActor.InteractState.Enter, movingDir);
+        }
+
+        List<GameObject> actorListAtPrevPos = GetActorsAtPos((Vector2)transform.position - movingDir);
+        foreach(GameObject occupyingActor in actorListAtPrevPos)
+        {
+            //Interact with the actor at previous position
+            if(occupyingActor.TryGetComponent(out IInteractableActor interactableActor))
+                interactableActor.Interact(this, IInteractableActor.InteractState.Leave, movingDir);
         }
     }
     #endregion
@@ -197,7 +206,7 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
             }
         }
 
-        TriggerInteractableActors(new Vector2(0,-1));
+        InteractaWithActors(new Vector2(0,-1));
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
         _isFalling = false;
     }
@@ -230,7 +239,7 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
 
         yield return StartCoroutine(TranslatingAnimation(movingDir));
 
-        TriggerInteractableActors(movingDir);
+        InteractaWithActors(movingDir);
 
         activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
 

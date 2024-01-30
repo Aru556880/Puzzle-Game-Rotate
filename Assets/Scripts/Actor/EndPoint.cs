@@ -6,9 +6,9 @@ public class EndPoint : Actor, IInteractableActor
 {
     public bool CanInteract => throw new System.NotImplementedException();
 
-    public void Interact(Actor actor, Vector2 triggerDir, Vector2 movingDir)
+    public void Interact(Actor actor, IInteractableActor.InteractState state, Vector2 movingDir)
     {
-        if(triggerDir == Vector2.zero && actor.TryGetComponent(out CharacterBody characterBody))
+        if(state == IInteractableActor.InteractState.Enter && actor.TryGetComponent(out CharacterBody characterBody))
         {
             //Character wall out the screen and Go to Next Level
             Player.Instance.OnPlayMovingControlEnd += ()=> 
