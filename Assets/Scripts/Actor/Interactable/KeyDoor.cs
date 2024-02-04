@@ -8,16 +8,21 @@ public class KeyDoor : Actor, IInteractableActor
     public bool HasKey;
     public bool CanInteract { get { return HasKey; }}
 
-    public void Interact(Actor actor, Vector2 triggerDir, Vector2 movingDir)
+    public void Interact(Actor actor, IInteractableActor.InteractState state, Vector2 movingDir)
     {
-
         Vector2 keyOpposDirVec = Util.GetVecDirFromCardinalDir( Util.GetOppositeDir(KeyDirection));
-        if(triggerDir == keyOpposDirVec && actor.TryGetComponent(out Cage cage))
+        
+        if(actor.TryGetComponent(out Cage cage))
         {
-            cage.UnLock();
-            HasKey = false;
+            Vector2 lockDir = Util.GetVecDirFromCardinalDir(cage.LockDirection);
+            if(lockDir == keyOpposDirVec && state == IInteractableActor.InteractState.Enter)
+            {
+                cage.UnLock();
+                HasKey = false;
 
-            gameObject.SetActive(false); //This may replace by animation of opening door
+                gameObject.SetActive(false); //This may replace by animation of opening door
+            }
+
         }
     }
 

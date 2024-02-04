@@ -57,7 +57,7 @@ public class CharacterBody : MovableActor
 
         yield return StartCoroutine(TranslatingAnimation(direction));
 
-        TriggerInteractableActors(direction);
+        InteractaWithActors(direction);
 
         activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
 

@@ -82,6 +82,12 @@ public class Util : MonoBehaviour
     {
         return point + offset * GameManager.Instance.levelBuilder.GridSize;
     }
+    public static bool IsAtSameTile(Vector2 position1, Vector2 position2)
+    {
+        Vector2Int gridPos1 = GameManager.Instance.levelBuilder.GetGridFromWorld(position1);
+        Vector2Int gridPos2 = GameManager.Instance.levelBuilder.GetGridFromWorld(position2);
+        return gridPos1 == gridPos2;
+    }
     public static IEnumerator WaitForCoroutines(List<Coroutine> coroutines)
     {
         for(int i=0;i<coroutines.Count;i++)
