@@ -152,6 +152,7 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
 
         return activedCoroutine;
     }
+    /*
     protected List<Coroutine> FallingActorsCoroutines()
     {
         List<GameObject> fallingActors = GetWillFallDownActors();
@@ -168,9 +169,11 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
 
         return activedCoroutine;
     }
+    */
     #endregion 
 
     #region COROUTINES
+    /*
     public IEnumerator FallDownAnimation()
     {
         if(_isFalling) yield break;
@@ -210,6 +213,7 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
         _isFalling = false;
     }
+    */
 
     public IEnumerator TranslatingAnimation(Vector2 movingDir)
     {
@@ -241,7 +245,7 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
 
         InteractaWithActors(movingDir);
 
-        activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
+       // activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
 
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
 

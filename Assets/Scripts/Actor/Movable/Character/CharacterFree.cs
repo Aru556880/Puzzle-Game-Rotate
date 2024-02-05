@@ -78,7 +78,7 @@ public class CharacterFree : MovableActor
 
         //TriggerInteractableActors();
 
-        activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
+        //activedCoroutine = Util.MergeList(activedCoroutine, FallingActorsCoroutines());
 
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine)); //Wait for other coroutines finished
 

@@ -25,7 +25,14 @@ public class GameManager : MonoBehaviour
         isMovementKeysPressed = false;
     }
     #region INPUT_EVENT
-    public void OnPlayerMove(InputAction.CallbackContext context)
+    public void TryUndo(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            _player.OnPlayerUndoMovement?.Invoke();
+        }
+    }
+    public void TryPlayerMove(InputAction.CallbackContext context)
     {
         StopCoroutine("KeepPressingKey");
         
@@ -41,7 +48,7 @@ public class GameManager : MonoBehaviour
         }
             
     }
-    public void OnPlayerModeSwitch(InputAction.CallbackContext context)
+    public void TryPlayerSwitchMode(InputAction.CallbackContext context)
     {
         if(context.performed && !isMovementKeysPressed && _player.CanPlayerControl)
         {

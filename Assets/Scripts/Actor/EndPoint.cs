@@ -11,7 +11,7 @@ public class EndPoint : Actor, IInteractableActor
         if(state == IInteractableActor.InteractState.Enter && actor.TryGetComponent(out CharacterBody characterBody))
         {
             //Character wall out the screen and Go to Next Level
-            Player.Instance.OnPlayMovingControlEnd += ()=> 
+            Player.Instance.OnPlayerMovingControlEnd += ()=> 
             {
                 Player.Instance.CanPlayerControl = false;
                 StartCoroutine(EndAnimCoroutine(characterBody, movingDir));

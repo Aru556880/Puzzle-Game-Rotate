@@ -8,7 +8,8 @@ using Cinemachine;
 public class Player : MonoBehaviour
 {
     static public Player Instance;
-    public Action OnPlayMovingControlEnd;
+    public Action OnPlayerMovingControlEnd;
+    public Action OnPlayerUndoMovement;
     public GameObject CurrentControlActor
     {
         get {return _currentControlActor;}
@@ -20,6 +21,11 @@ public class Player : MonoBehaviour
     }
     public bool CanPlayerControl;
     
+    struct MoveInfo
+    {
+        GameObject controlActor;
+        Vector2Int fromPos;
+    }
     [SerializeField] GameObject _currentControlActor;
     [SerializeField] Camera _mainCamera;
     [SerializeField] CinemachineVirtualCamera _cinemachine;
@@ -98,7 +104,7 @@ public class Player : MonoBehaviour
         }
 
         CanPlayerControl = true;
-        OnPlayMovingControlEnd?.Invoke();
+        OnPlayerMovingControlEnd?.Invoke();
     }
 
     #endregion 
