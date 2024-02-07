@@ -82,11 +82,11 @@ public class Player : MonoBehaviour
         {
             characterFree.TryPossess();
         }
-        else if(CurrentControlActor.TryGetComponent(out MovableActor movableActor))
+        else if(CurrentControlActor.TryGetComponent(out Possessable possessedActor))
         {
-            if(movableActor.IsPossessed(out _)) 
+            if(possessedActor.IsPossessed(out _)) 
             {
-                movableActor.StopPossessing();
+                possessedActor.StopPossessing();
             }
             else Debug.Log("Cannot stop possessing an unpossessed actor!");
         }
@@ -98,9 +98,9 @@ public class Player : MonoBehaviour
     {
         CanPlayerControl = false;
 
-        if(CurrentControlActor.TryGetComponent(out MovableActor movableActor))
+        if(CurrentControlActor.TryGetComponent(out Actor playerActor))
         {
-            yield return StartCoroutine(movableActor.MovedByPlayerCoroutine(direction));
+            yield return StartCoroutine(playerActor.ControlActorCoroutine(direction));
         }
 
         CanPlayerControl = true;

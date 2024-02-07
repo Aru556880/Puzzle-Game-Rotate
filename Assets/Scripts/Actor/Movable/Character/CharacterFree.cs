@@ -20,20 +20,20 @@ public class CharacterFree : MovableActor
     #region POSSESS_RELATED
     public void TryPossess()
     {
-        MovableActor possessedActor = FindPossessTarget();
+        Possessable possessedActor = FindPossessTarget();
 
         if(possessedActor!=null)
         {
             possessedActor.BePossessed(this);
         }
     }
-    MovableActor FindPossessTarget()
+    Possessable FindPossessTarget()
     {
         foreach(GameObject actor in GetActorsAtPos(transform.position))
         {
-            if(actor.TryGetComponent(out MovableActor movableActor) && movableActor.CanBePossessed)
+            if(actor.TryGetComponent(out Possessable possessedActor) && possessedActor.CanBePossessed)
             {
-                return movableActor;
+                return possessedActor;
             }
         }
 
@@ -50,8 +50,9 @@ public class CharacterFree : MovableActor
     }
     #endregion
 
-    #region IMPLEMENT_ABSTRACT_METHODS
-    public override IEnumerator MovedByPlayerCoroutine(Vector2 direction)
+    #region OVERRIDE
+    public override bool IsBlocked(Vector2 movingDir) { return false; } //Free character is incorporeal
+    public override IEnumerator ControlActorCoroutine(Vector2 direction)
     {
         //When player control this block and input WASD, this coroutine will be called
 
@@ -74,6 +75,7 @@ public class CharacterFree : MovableActor
             yield break;
         }
         
+        _possessHint.SetActive(false);
         yield return StartCoroutine(TranslatingAnimation(direction));
 
         //TriggerInteractableActors();
@@ -84,11 +86,6 @@ public class CharacterFree : MovableActor
 
         ShowPossessTargetHint();
     }
-    #endregion
-
-    #region OVERRIDE
-    public override bool CanBePossessed => false;
-    public override bool IsBlocked(Vector2 movingDir) { return false; } //Free character is incorporeal
     protected override bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos)
     {
         Vector2 currentPos = transform.position;

@@ -37,52 +37,6 @@ public class Cage : SquareActor
 
         IsLocked = false;
     }
-
-    #region OVERRIDE_POSSESS_RELATED
-    //Possess the cage is actually possess the characterBody inside it, need to override something
-    public override bool IsPossessed(out CharacterFree possessingChar) //It is possessed if the body inside it is possessed
-    {
-        if(_bodyInCage!=null && _bodyInCage.IsPossessed(out CharacterFree charFree))
-        {
-            possessingChar = charFree;
-            return true;
-        }
-
-        possessingChar = null;
-        return false;
-    }
-    public override bool CanBePossessed //Cage can be possessed if it is locked and contains character body which is empty
-    {
-        get
-        {
-            if(_bodyInCage!=null && _bodyInCage.CanBePossessed) return true;
-
-            return false;
-        }
-    }
-    public override void BePossessed(CharacterFree possessingChar)
-    {
-        if(_bodyInCage!=null && !IsPossessed(out _))
-        {
-            _bodyInCage.BePossessed(possessingChar);
-            Player.Instance.CurrentControlActor = gameObject;
-        }
-    }
-    public override void StopPossessing()
-    {   
-        if(IsPossessed(out CharacterFree possessingChar))
-        {
-            _bodyInCage.StopPossessing();
-            possessingChar.transform.position = transform.position; 
-            Player.Instance.CurrentControlActor = possessingChar.gameObject;
-        }
-    }
-    #endregion
-    public override IEnumerator MovedByPlayerCoroutine(Vector2 direction)
-    {
-        if(_bodyInCage==null) yield break;
-        yield return StartCoroutine(base.MovedByPlayerCoroutine(direction));
-    }
     protected override void InteractaWithActors(Vector2 movingDir)
     {
         if(_bodyInCage==null) return;

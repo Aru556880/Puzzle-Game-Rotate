@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-//This class is the only square actor that player can control
-public class SquareActor : MovableActor
+public class PlayerActor : MovableActor
 {
-    #region IMPLEMENT_ABSTRACT_METHODS
-    public IEnumerator MovedByPlayerCoroutine(Vector2 direction)
+    public override IEnumerator ControlActorCoroutine (Vector2 direction)
     {
         //When player control this block and input WASD, this coroutine will be called
 
@@ -51,15 +49,11 @@ public class SquareActor : MovableActor
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine)); //Wait for other coroutines finished
 
     }
-    #endregion
 
-    #region VIRTUAL_METHODS_ROTATE
-    public virtual void BeginRotateAction(Vector2 movingDir) {} //Do something when rotation starts
-    public virtual void PerformRotatingAction(Vector2 movingDir) { }  //Do something when rotationing
-    public virtual void EndRotateAction(Vector2 movingDir) {} //Do something when rotation ends
-    #endregion
-
-    #region OVERRIDE
+    #region ROTATE_METHODS
+    public void BeginRotateAction(Vector2 movingDir) {} //Do something when rotation starts
+    public void PerformRotatingAction(Vector2 movingDir) { }  //Do something when rotationing
+    public void EndRotateAction(Vector2 movingDir) {} //Do something when rotation ends
     protected override bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos)
     {
         Vector2 currentPos = transform.position;

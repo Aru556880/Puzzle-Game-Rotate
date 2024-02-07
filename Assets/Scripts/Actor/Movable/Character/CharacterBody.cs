@@ -12,26 +12,9 @@ public class CharacterBody : MovableActor
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();    
     }
-    public override void BePossessed(CharacterFree possessingChar)
-    {
-        if(!IsPossessed(out _)) 
-        {
-            base.BePossessed(possessingChar);
-            _spriteRenderer.sprite = PlayerFullBodySprite;
-            IsEmpty = false;
-        }
-    }
-    public override void StopPossessing()
-    {   
-        if(IsPossessed(out CharacterFree possessingChar))
-        {
-            base.StopPossessing();
-            _spriteRenderer.sprite = PlayerEmptyBodySprite;
-            IsEmpty = true;
-        }
-    }
 
     #region IMPLEMENT_ABSTRACT_METHODS
+    /*
     public override IEnumerator MovedByPlayerCoroutine(Vector2 direction)
     {
         //When player control this block and input WASD, this coroutine will be called
@@ -63,6 +46,6 @@ public class CharacterBody : MovableActor
 
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine)); //Wait for other coroutines finished
 
-    }
+    }*/
     #endregion
 }

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-//Currently MovableActor is assumed to be the only thing that can be possessed,
-//If there are others thing can also be possessed, we need to use Interface instead
-public abstract class MovableActor : Actor //Objects on the tilemap that can move (be pushed/fall down aand so on)
+
+public class MovableActor : Actor //Objects on the tilemap that can be pushed
 {
     [SerializeField] float movingSpeed = 1;
 
@@ -13,49 +12,6 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
     public override bool IsBlocked(Vector2 movingDir)
     {
         return !CanBePushed(movingDir);
-    }
-    #endregion
-
-    //Subclasses must implement their abstract functions
-    #region ABSTRACT_METHODS
-    public abstract IEnumerator MovedByPlayerCoroutine(Vector2 direction);
-
-    #endregion
-
-    #region VIRTUAL_METHOD_POSSESS_RELATED
-    public virtual bool IsPossessed(out CharacterFree possessingChar) //This block is possessed if CharacterFree is set to be its child
-    {
-        foreach(Transform child in transform)
-        {
-            if(child.TryGetComponent(out CharacterFree charFree))
-            {
-                possessingChar = charFree;
-                return true;
-            }
-        }
-        
-        possessingChar = null;
-        return false;
-    }
-    public virtual bool CanBePossessed{ get{ return !IsPossessed(out _); }}
-    public virtual void BePossessed(CharacterFree possessingChar) //Now we control this movable actor
-    {
-        if(!IsPossessed(out _)) 
-        {
-            possessingChar.transform.SetParent(transform);
-            possessingChar.gameObject.SetActive(false);
-            Player.Instance.CurrentControlActor = gameObject;
-        }
-    }
-    public virtual void StopPossessing() //Leave the possessed movable actor
-    {   
-        if(IsPossessed(out CharacterFree possessingChar))
-        {
-            possessingChar.gameObject.SetActive(true);
-            possessingChar.transform.SetParent(_actorsTransform);
-            possessingChar.transform.position = transform.position;  //The free character is spawned at this block
-            Player.Instance.CurrentControlActor = possessingChar.gameObject;
-        }
     }
     #endregion
 

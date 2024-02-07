@@ -6,6 +6,10 @@ public class Actor : MonoBehaviour //Any Object on the tile map
 {
     protected float _gridSize { get { return GameManager.Instance.levelBuilder.GridSize;} }
     protected Transform _actorsTransform { get { return GameManager.Instance.levelBuilder.AllActors.transform; } }
+    private void OnDisable() 
+    {
+        StopAllCoroutines();
+    }
     protected void Centralize()
     {
         Vector2Int gridPos = GameManager.Instance.levelBuilder.GetGridFromWorld(transform.position);
@@ -86,8 +90,5 @@ public class Actor : MonoBehaviour //Any Object on the tile map
         return currentDir;
     }
     public virtual bool IsBlocked(Vector2 movingDir){ return false;}
-    private void OnDisable() 
-    {
-        StopAllCoroutines();
-    }
+    public virtual IEnumerator ControlActorCoroutine(Vector2 inputDirection) { yield return null; }
 }

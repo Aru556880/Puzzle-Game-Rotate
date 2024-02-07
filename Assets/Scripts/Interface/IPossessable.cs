@@ -4,7 +4,8 @@ using UnityEngine;
 
 public interface IPossessable
 {
+    public bool IsPossessed { get;  }
     public bool CanPossessable { get; }
     public void BePossessed();
-    public void Leave();
+    public void StopPossessing();
 }

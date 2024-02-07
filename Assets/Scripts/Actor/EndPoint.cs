@@ -21,7 +21,7 @@ public class EndPoint : Actor, IInteractableActor
     IEnumerator EndAnimCoroutine(CharacterBody characterBody, Vector2 direction)
     {
         yield return new WaitForSeconds(0.5f);
-        yield return StartCoroutine(characterBody.MovedByPlayerCoroutine(direction));
+        //yield return StartCoroutine(characterBody.MovedByPlayerCoroutine(direction));
         LevelManager.Instance.EnterLevelTest();
     }
 
