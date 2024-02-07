@@ -7,7 +7,6 @@ using UnityEngine.Tilemaps;
 //If there are others thing can also be possessed, we need to use Interface instead
 public abstract class MovableActor : Actor //Objects on the tilemap that can move (be pushed/fall down aand so on)
 {
-    protected bool _isFalling = false;
     [SerializeField] float movingSpeed = 1;
 
     #region OVERRIDE
@@ -61,12 +60,6 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
     #endregion
 
     #region VIRTUAL_METHOD_MOVING_RELATED
-    protected virtual bool WillFallDown() //Check if this block will fall down 
-    {
-        Vector2 floorPos = Util.GetCertainPosition(transform.position, new Vector2(0,-1));
-
-        return !IsOccupiedAt(floorPos); //Defult: Check it is on the ground or not
-    }
     protected virtual bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos) //Defult: Only check next position is blocked or not
     {
         Vector2 currentPos = transform.position;
@@ -152,69 +145,9 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
 
         return activedCoroutine;
     }
-    /*
-    protected List<Coroutine> FallingActorsCoroutines()
-    {
-        List<GameObject> fallingActors = GetWillFallDownActors();
-        List<Coroutine> activedCoroutine = new ();
-
-        foreach(var actor in fallingActors)
-        {
-            if(actor.TryGetComponent(out MovableActor movableActor))
-            {
-                Coroutine coroutine = movableActor.StartCoroutine(movableActor.FallDownAnimation());
-                if(!activedCoroutine.Contains(coroutine)) activedCoroutine.Add(coroutine);
-            }
-        }
-
-        return activedCoroutine;
-    }
-    */
     #endregion 
 
     #region COROUTINES
-    /*
-    public IEnumerator FallDownAnimation()
-    {
-        if(_isFalling) yield break;
-
-        _isFalling = true;
-        Vector2 floorPos = Util.GetCertainPosition(transform.position, new Vector2(0,-1));
-
-        while(WillFallDown())
-        {
-            Vector2 origPos = transform.position;
-            float progress = 0;
-            float duration = 0.1f;
-            while(progress < duration)
-            {
-                progress = Mathf.Min(duration, progress + Time.deltaTime);
-                transform.position = Vector2.Lerp(origPos, floorPos, progress/duration);
-                yield return null;
-            }
-
-            Centralize();
-            floorPos = Util.GetCertainPosition(transform.position, new Vector2(0,-1));
-        }
-
-        List<GameObject> fallingActors = new ();
-        List<Coroutine> activedCoroutine = new ();
-        fallingActors = GetWillFallDownActors();
-        foreach(var actor in fallingActors)
-        {
-            if(actor.TryGetComponent(out MovableActor movableActor)) 
-            {
-                Coroutine coroutine = movableActor.StartCoroutine(movableActor.FallDownAnimation());
-                if(!activedCoroutine.Contains(coroutine)) activedCoroutine.Add(coroutine);
-            }
-        }
-
-        InteractaWithActors(new Vector2(0,-1));
-        yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine));
-        _isFalling = false;
-    }
-    */
-
     public IEnumerator TranslatingAnimation(Vector2 movingDir)
     {
         Vector2 nextPos = Util.GetCertainPosition(transform.position, movingDir);
@@ -253,19 +186,4 @@ public abstract class MovableActor : Actor //Objects on the tilemap that can mov
     }
     #endregion
 
-    #region OTHER_METHODS
-    protected List<GameObject> GetWillFallDownActors()
-    {
-        List<GameObject> actorList = new ();
-        foreach(Transform child in _actorsTransform)
-        {
-            if(child.TryGetComponent(out MovableActor actor) && actor.WillFallDown())
-            {
-                if(!actorList.Contains(child.gameObject)) actorList.Add(child.gameObject);
-            }
-        }
-
-        return actorList;
-    }
-    #endregion
 }

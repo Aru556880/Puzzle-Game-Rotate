@@ -89,10 +89,6 @@ public class CharacterFree : MovableActor
     #region OVERRIDE
     public override bool CanBePossessed => false;
     public override bool IsBlocked(Vector2 movingDir) { return false; } //Free character is incorporeal
-    protected override bool WillFallDown()
-    {
-        return false;
-    }
     protected override bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos)
     {
         Vector2 currentPos = transform.position;

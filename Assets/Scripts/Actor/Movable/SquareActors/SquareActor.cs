@@ -59,23 +59,6 @@ public class SquareActor : MovableActor
     #endregion
 
     #region OVERRIDE
-    protected override bool WillFallDown() //It also check that it can stay on the walls or not
-    {
-        Vector2 floorPos = Util.GetCertainPosition(transform.position, new Vector2(0,-1));
-        Vector2 contactPos1 = Util.GetCertainPosition(transform.position, new Vector2(1,0));
-        Vector2 contactPos2 = Util.GetCertainPosition(transform.position, new Vector2(-1,0));
-        Vector2 contactPos3 = Util.GetCertainPosition(transform.position, new Vector2(0,1));
-
-        //current control actor is this
-        if(Player.Instance.CurrentControlActor == gameObject)
-        {
-            //check can stop at wall or is on the ground
-            return !IsOccupiedAt(floorPos) && !IsWalkableWall(contactPos1) 
-            && !IsWalkableWall(contactPos2) && !IsWalkableWall(contactPos3);
-        }
-
-        return !IsOccupiedAt(floorPos);
-    }
     protected override bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos)
     {
         Vector2 currentPos = transform.position;
@@ -154,7 +137,7 @@ public class SquareActor : MovableActor
         {
             return 0;
         }
-        else if(!IsOccupiedAt(flipPos) && Mathf.Abs(movingDir.y) == 1 )
+        else if( !IsOccupiedAt(flipPos) )
         {
             return rotateDir * 180;  
         }
