@@ -8,7 +8,7 @@ using Cinemachine;
 public class Player : MonoBehaviour
 {
     static public Player Instance;
-    public Action OnPlayerMovingControlEnd;
+    public Action OnPlayerCompleteLevel; //Other script should suscribe this action, e.g. UI
     public Action OnPlayerUndoMovement;
     public GameObject CurrentControlActor
     {
@@ -45,8 +45,8 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
-        CanPlayerControl = true;
         _cinemachine.Follow = CurrentControlActor.transform;
+        OnPlayerCompleteLevel += () => LevelManager.Instance.EnterLevelTest();
     }
 
     private void Update()
@@ -62,6 +62,19 @@ public class Player : MonoBehaviour
     public void SwitchMode()
     {
         StartCoroutine(SwitchModeCoroutine());
+    }
+    bool IsLevelCompleted()
+    {
+        bool win = true;
+        foreach(Transform actor in GameManager.ActorsTransform)
+        {
+            if(actor.TryGetComponent(out LightObj lightObj))
+            {
+                win = win && lightObj.IsLightBlocked();
+            }
+        }
+
+        return win;
     }
     #endregion
 
@@ -103,8 +116,13 @@ public class Player : MonoBehaviour
             yield return StartCoroutine(playerActor.ControlActorCoroutine(direction));
         }
 
+        if(IsLevelCompleted())
+        {
+            OnPlayerCompleteLevel?.Invoke();
+            yield break;
+        }
+
         CanPlayerControl = true;
-        OnPlayerMovingControlEnd?.Invoke();
     }
 
     #endregion 

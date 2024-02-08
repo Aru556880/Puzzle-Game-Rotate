@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-
 public class MovableActor : Actor //Objects on the tilemap that can be pushed
 {
     [SerializeField] float movingSpeed = 1;
@@ -16,27 +15,6 @@ public class MovableActor : Actor //Objects on the tilemap that can be pushed
     #endregion
 
     #region VIRTUAL_METHOD_MOVING_RELATED
-    protected virtual bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos) //Defult: Only check next position is blocked or not
-    {
-        Vector2 currentPos = transform.position;
-        Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);
-
-        if(movingDir.x == 0 && movingDir.y == 0) return false;
-        else if(IsWall(nextPos)) return false;
-
-
-        List<GameObject> occupyingActors = GetActorsAtPos(nextPos);
-        foreach(var element in occupyingActors)
-        {
-            if(element.TryGetComponent(out Actor actor))
-            {
-                if(actor.IsBlocked(movingDir)) return false;
-            }
-        }
-
-        return true;
-    }
-    
     protected virtual bool CanBePushed(Vector2 movingDir)
     {
         Vector2 currentPos = transform.position;

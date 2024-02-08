@@ -86,7 +86,7 @@ public class CharacterFree : MovableActor
 
         ShowPossessTargetHint();
     }
-    protected override bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos)
+    protected bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos)
     {
         Vector2 currentPos = transform.position;
         Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);

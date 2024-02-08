@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+//This class is the only actor that player can control
 public class PlayerActor : MovableActor
 {
     public override IEnumerator ControlActorCoroutine (Vector2 direction)
@@ -49,12 +50,7 @@ public class PlayerActor : MovableActor
         yield return StartCoroutine(Util.WaitForCoroutines(activedCoroutine)); //Wait for other coroutines finished
 
     }
-
-    #region ROTATE_METHODS
-    public void BeginRotateAction(Vector2 movingDir) {} //Do something when rotation starts
-    public void PerformRotatingAction(Vector2 movingDir) { }  //Do something when rotationing
-    public void EndRotateAction(Vector2 movingDir) {} //Do something when rotation ends
-    protected override bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos)
+    protected bool CanMoveWhenControlled(Vector2 movingDir, Vector2 contactWallPos)
     {
         Vector2 currentPos = transform.position;
         Vector2 nextPos = Util.GetCertainPosition(currentPos, movingDir);
@@ -75,6 +71,11 @@ public class PlayerActor : MovableActor
 
         return true;
     }
+
+    #region ROTATE_METHODS
+    public void BeginRotateAction(Vector2 movingDir) {} //Do something when rotation starts
+    public void PerformRotatingAction(Vector2 movingDir) { }  //Do something when rotationing
+    public void EndRotateAction(Vector2 movingDir) {} //Do something when rotation ends
     #endregion
 
     #region GET_SOMETHING_FOR_ROTATING

@@ -69,5 +69,6 @@ public class LevelManager : MonoBehaviour
             yield return null;
         }
         maskImage.gameObject.gameObject.SetActive(false);
+        if(Player.Instance!=null) Player.Instance.CanPlayerControl = true;
     }
 }

@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cage : SquareActor
+public class Cage : MovableActor
 {
     public bool IsLocked;
     public Util.CardinalDirection LockDirection { get {return GetInitCertainDirection(Util.CardinalDirection.Left); }}
-    CharacterBody _bodyInCage
+    /*CharacterBody _bodyInCage
     {
         get
         {
@@ -21,7 +21,7 @@ public class Cage : SquareActor
 
             return null;
         }
-    }
+    }*/
 
     void Start() 
     {
@@ -29,17 +29,18 @@ public class Cage : SquareActor
     }
     public void UnLock()
     {
+        /*
         if(_bodyInCage!=null)
         {
             Player.Instance.CurrentControlActor = _bodyInCage.gameObject;
             _bodyInCage.transform.SetParent(_actorsTransform);
-        }
+        }*/
 
         IsLocked = false;
     }
     protected override void InteractaWithActors(Vector2 movingDir)
     {
-        if(_bodyInCage==null) return;
+        //if(_bodyInCage==null) return;
 
         base.InteractaWithActors(movingDir);
 
@@ -51,9 +52,11 @@ public class Cage : SquareActor
                 interactableActor.Interact(this, IInteractableActor.InteractState.Enter, movingDir);
         }
     }
-    public override void PerformRotatingAction(Vector2 movingDir) //Keep the character body facing in correct direction
+    public void PerformRotatingAction(Vector2 movingDir) //Keep the character body facing in correct direction
     {
+        /*
         if(_bodyInCage==null) return;
         _bodyInCage.transform.rotation = Quaternion.Euler(new Vector3(0,0,0));
+        */
     }
 }

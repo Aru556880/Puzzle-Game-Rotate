@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public static Transform ActorsTransform { get { return Instance.levelBuilder.AllActors.transform; } }
     public LevelBuilder levelBuilder;
     private bool isMovementKeysPressed;
     private Player _player;
